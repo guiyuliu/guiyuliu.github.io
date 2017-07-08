@@ -3,16 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hexo</title>
+  <title>刘丢丢の日常</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+  <meta name="description" content="一个女极客的养成日记">
+<meta property="og:type" content="website">
+<meta property="og:title" content="刘丢丢の日常">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="一个女极客的养成日记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="刘丢丢の日常">
+<meta name="twitter:description" content="一个女极客的养成日记">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -33,8 +36,12 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
+        <a href="/" id="logo">刘丢丢の日常</a>
       </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
       
     </div>
     <div id="header-inner" class="inner">
@@ -48,9 +55,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -84,7 +91,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>本文参考了知乎上两位的<a href="https://www.zhihu.com/question/21193762/answer/79109280" target="_blank" rel="external">CrazyMilk</a> <a href="https://www.zhihu.com/question/21193762/answer/138139539" target="_blank" rel="external">koko</a></p>
-<p>##一、设置github.io的两个分支<br>总体思路：一个分支用来存放Hexo生成的网站原始的文件，另一个分支用来存放生成的静态网页。<br>1.把之前的github.io整个repo删除掉，重新建一个<br>2.把这个空的repo 克隆到本地<br>3.将这个repo中的隐藏的.git文件夹拷贝到外面的git文件夹</p>
+<h3 id="一、设置github-io的两个分支"><a href="#一、设置github-io的两个分支" class="headerlink" title="一、设置github.io的两个分支"></a>一、设置github.io的两个分支</h3><p>总体思路：一个分支用来存放Hexo生成的网站原始的文件，另一个分支用来存放生成的静态网页。<br>1.把之前的github.io整个repo删除掉，重新建一个<br>2.把这个空的repo 克隆到本地<br>3.将这个repo中的隐藏的.git文件夹拷贝到外面的git文件夹</p>
 <pre><code>cp -r .git ../git
 </code></pre><p>4.本地github.io文件夹下通过Git bash依次执行</p>
 <pre><code>npm install hexo
@@ -104,21 +111,27 @@ git push origin hexo
 </code></pre>提交网站相关的文件；</li>
 <li>执行hexo g -d生成网站并部署到GitHub上</li>
 </ol>
-<p>###二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）<br>通过下面的流程进行管理。</p>
+<h3 id="二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）"><a href="#二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）" class="headerlink" title="二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）"></a>二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）</h3><p>通过下面的流程进行管理。</p>
 <ol>
-<li>依次执行git add .、git commit -m “…”、git push origin hexo指令将改动推送到GitHub（此时当前分支应为hexo）；</li>
+<li>依次执行<pre><code>git add .
+git commit -m &quot;...&quot;
+git push origin hexo
+</code></pre>指令将改动推送到GitHub（此时当前分支应为hexo）；</li>
 <li>然后才执行hexo g -d发布网站到master分支上。</li>
 </ol>
-<p>###三、本地资料丢失后的流程</p>
-<ol>
-<li>使用git clone <a href="https://github.com/guiyuliu/guiyuliu.github.io.git拷贝仓库（默认分支为hexo）；" target="_blank" rel="external">https://github.com/guiyuliu/guiyuliu.github.io.git拷贝仓库（默认分支为hexo）；</a></li>
-<li>在本地新拷贝的github.io文件夹下通过Git bash依次执行下列指令：<br>npm install hexo、npm install、npm install hexo-deployer-git（记得，不需要hexo init这条指令）。</li>
+<h3 id="三、本地资料丢失后的流程"><a href="#三、本地资料丢失后的流程" class="headerlink" title="三、本地资料丢失后的流程"></a>三、本地资料丢失后的流程</h3><ol>
+<li>使用<pre><code>git clone https://github.com/guiyuliu/guiyuliu.github.io.git
+</code></pre>拷贝仓库（默认分支为hexo）</li>
+<li>在本地新拷贝的github.io文件夹下通过Git bash依次执行下列指令：<pre><code>npm install hexo
+npm install
+npm install hexo-deployer-git
+</code></pre>（记得，不需要hexo init这条指令）。</li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/07/08/如何实现hexo的迁移/" data-id="cj4v9qttu0000hnoilct517e0" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/07/08/如何实现hexo的迁移/" data-id="cj4valvcx0001lwoimcnm50z6" class="article-share-link">Delen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作/">操作</a></li></ul>
@@ -165,7 +178,7 @@ git push origin hexo
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/07/08/hello-world/" data-id="cj4v8zqqr0000gioibr2jekw1" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/07/08/hello-world/" data-id="cj4valvct0000lwoimw77gvja" class="article-share-link">Delen</a>
       
       
     </footer>
@@ -185,7 +198,7 @@ git push origin hexo
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Mot-clés</h3>
+    <h3 class="widget-title">Labels</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li></ul>
     </div>
@@ -195,7 +208,7 @@ git push origin hexo
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
       <a href="/tags/操作/" style="font-size: 10px;">操作</a>
     </div>
@@ -204,7 +217,7 @@ git push origin hexo
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archieven</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
     </div>
@@ -214,7 +227,7 @@ git push origin hexo
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recente berichten</h3>
     <div class="widget">
       <ul>
         
@@ -238,8 +251,8 @@ git push origin hexo
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017 John Doe<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      &copy; 2017 guiyuliu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
