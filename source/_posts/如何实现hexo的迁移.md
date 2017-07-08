@@ -5,6 +5,7 @@ tag: 操作
 本文参考了知乎上两位的[CrazyMilk](https://www.zhihu.com/question/21193762/answer/79109280) [koko](https://www.zhihu.com/question/21193762/answer/138139539)
 ### 一、设置github.io的两个分支
 总体思路：一个分支用来存放Hexo生成的网站原始的文件，另一个分支用来存放生成的静态网页。
+<!-- more -->
 1.把之前的github.io整个repo删除掉，重新建一个
 2.把这个空的repo 克隆到本地
 3.将这个repo中的隐藏的.git文件夹拷贝到外面的git文件夹
