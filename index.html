@@ -55,9 +55,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -99,7 +99,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/07/08/2017:7:8/" data-id="cj4vdlv9h00002hoiwqadl5zd" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/07/08/2017:7:8/" data-id="cj4vdlv9h00002hoiwqadl5zd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
@@ -134,47 +134,16 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>本文参考了知乎上两位的<a href="https://www.zhihu.com/question/21193762/answer/79109280" target="_blank" rel="external">CrazyMilk</a> <a href="https://www.zhihu.com/question/21193762/answer/138139539" target="_blank" rel="external">koko</a></p>
-<h3 id="一、设置github-io的两个分支"><a href="#一、设置github-io的两个分支" class="headerlink" title="一、设置github.io的两个分支"></a>一、设置github.io的两个分支</h3><p>总体思路：一个分支用来存放Hexo生成的网站原始的文件，另一个分支用来存放生成的静态网页。<br>1.把之前的github.io整个repo删除掉，重新建一个<br>2.把这个空的repo 克隆到本地<br>3.将这个repo中的隐藏的.git文件夹拷贝到外面的git文件夹</p>
-<pre><code>cp -r .git ../git
-</code></pre><p>4.本地github.io文件夹下通过Git bash依次执行</p>
-<pre><code>npm install hexo
-hexo init
-npm install 
-npm install hexo-deployer-git
-</code></pre><p>5.把.git文件重新拷贝进来,之所以要先拷出去是因为执行hexo init 要求文件夹必须为空</p>
-<p>6.新建一个branch hexo,这个用来存本地文件，写一个readme.md push上去，要不然是branch是空的，查看自己在哪个分支时没法看</p>
-<pre><code>git branch -b hexo
-git add readme.md
-git commit -m ”test branch“
-</code></pre><p>再新建一个master的branch</p>
-<ol>
-<li>修改_config.yml中的deploy参数，分支应为master,依次执行<pre><code>git add .
-git commit -m &quot;...&quot;
-git push origin hexo
-</code></pre>提交网站相关的文件；</li>
-<li>执行hexo g -d生成网站并部署到GitHub上</li>
-</ol>
-<h3 id="二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）"><a href="#二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）" class="headerlink" title="二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）"></a>二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）</h3><p>通过下面的流程进行管理。</p>
-<ol>
-<li>依次执行<pre><code>git add .
-git commit -m &quot;...&quot;
-git push origin hexo
-</code></pre>指令将改动推送到GitHub（此时当前分支应为hexo）；</li>
-<li>然后才执行hexo g -d发布网站到master分支上。</li>
-</ol>
-<h3 id="三、本地资料丢失后的流程"><a href="#三、本地资料丢失后的流程" class="headerlink" title="三、本地资料丢失后的流程"></a>三、本地资料丢失后的流程</h3><ol>
-<li>使用<pre><code>git clone https://github.com/guiyuliu/guiyuliu.github.io.git
-</code></pre>拷贝仓库（默认分支为hexo）</li>
-<li>在本地新拷贝的github.io文件夹下通过Git bash依次执行下列指令：<pre><code>npm install hexo
-npm install
-npm install hexo-deployer-git
-</code></pre>（记得，不需要hexo init这条指令）。</li>
-</ol>
-
+<h3 id="一、设置github-io的两个分支"><a href="#一、设置github-io的两个分支" class="headerlink" title="一、设置github.io的两个分支"></a>一、设置github.io的两个分支</h3><p>总体思路：一个分支用来存放Hexo生成的网站原始的文件，另一个分支用来存放生成的静态网页。<br>
+        
+          <p class="article-more-link">
+            <a href="/2017/07/08/如何实现hexo的迁移/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/07/08/如何实现hexo的迁移/" data-id="cj4vc0ybi0001uzoi1iohbzgi" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/07/08/如何实现hexo的迁移/" data-id="cj4vc0ybi0001uzoi1iohbzgi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作/">操作</a></li></ul>
@@ -221,7 +190,7 @@ npm install hexo-deployer-git
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/07/08/hello-world/" data-id="cj4vc0ybb0000uzoiihje9suk" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/07/08/hello-world/" data-id="cj4vc0ybb0000uzoiihje9suk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -241,7 +210,7 @@ npm install hexo-deployer-git
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Mot-clés</h3>
+    <h3 class="widget-title">Tags</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
     </div>
@@ -251,7 +220,7 @@ npm install hexo-deployer-git
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
       <a href="/tags/操作/" style="font-size: 10px;">操作</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
@@ -270,7 +239,7 @@ npm install hexo-deployer-git
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
@@ -299,7 +268,7 @@ npm install hexo-deployer-git
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 guiyuliu<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
