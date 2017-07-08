@@ -2,15 +2,16 @@
 title: 如何实现hexo的迁移
 tag: 操作
 ---
-本文参考了知乎上两位的[回答](https://www.zhihu.com/question/21193762) [koko](https://www.zhihu.com/question/21193762/answer/138139539)
-
+本文参考了知乎上两位的[CrazyMilk](https://www.zhihu.com/question/21193762/answer/79109280) [koko](https://www.zhihu.com/question/21193762/answer/138139539)
+##一、设置github.io的两个分支
+总体思路：一个分支用来存放Hexo生成的网站原始的文件，另一个分支用来存放生成的静态网页。
 1.把之前的github.io整个repo删除掉，重新建一个
 2.把这个空的repo 克隆到本地
 3.将这个repo中的隐藏的.git文件夹拷贝到外面的git文件夹
 ``` 
 cp -r .git ../git
 ``` 
-4.本地http://CrazyMilk.github.io文件夹下通过Git bash依次执行
+4.本地github.io文件夹下通过Git bash依次执行
 ``` 
 npm install hexo
 hexo init
@@ -36,4 +37,16 @@ git push origin hexo
 提交网站相关的文件；
 8. 执行hexo g -d生成网站并部署到GitHub上
 
-文件夹中
+###二、关于日常的改动流程在本地对博客进行修改（添加新博文、修改样式等等）
+通过下面的流程进行管理。
+1. 依次执行git add .、git commit -m "..."、git push origin hexo指令将改动推送到GitHub（此时当前分支应为hexo）；
+2. 然后才执行hexo g -d发布网站到master分支上。
+
+###三、本地资料丢失后的流程
+1. 使用git clone https://github.com/guiyuliu/guiyuliu.github.io.git拷贝仓库（默认分支为hexo）；
+2. 在本地新拷贝的github.io文件夹下通过Git bash依次执行下列指令：
+npm install hexo、npm install、npm install hexo-deployer-git（记得，不需要hexo init这条指令）。
+
+
+
+
