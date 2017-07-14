@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>用少量训练数据实现单张图片的事件检测 | 刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本主要贡献：1.从网络数据发现事件相关的概念，删除某些杂乱的概念2.一个concept-based表示方法3.RED包含稀少的事件，21个种类，7000张图片，更有挑战性。">
+<meta name="keywords" content="PaperReading">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用少量训练数据实现单张图片的事件检测">
+<meta property="og:url" content="http://yoursite.com/2017/07/15/事件检测-paper/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="本主要贡献：1.从网络数据发现事件相关的概念，删除某些杂乱的概念2.一个concept-based表示方法3.RED包含稀少的事件，21个种类，7000张图片，更有挑战性。">
+<meta property="og:updated_time" content="2017-07-14T16:43:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用少量训练数据实现单张图片的事件检测">
+<meta name="twitter:description" content="本主要贡献：1.从网络数据发现事件相关的概念，删除某些杂乱的概念2.一个concept-based表示方法3.RED包含稀少的事件，21个种类，7000张图片，更有挑战性。">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-事件检测-paper" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/15/事件检测-paper/" class="article-date">
+  <time datetime="2017-07-14T16:43:23.000Z" itemprop="datePublished">2017-07-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      用少量训练数据实现单张图片的事件检测
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="本主要贡献："><a href="#本主要贡献：" class="headerlink" title="本主要贡献："></a>本主要贡献：</h3><p>1.从网络数据发现事件相关的概念，删除某些杂乱的概念<br>2.一个concept-based表示方法<br>3.RED包含稀少的事件，21个种类，7000张图片，更有挑战性。<br><a id="more"></a></p>
+<h2 id="Approaches"><a href="#Approaches" class="headerlink" title="Approaches"></a>Approaches</h2><h3 id="3-1-Event-Concept-Discovery"><a href="#3-1-Event-Concept-Discovery" class="headerlink" title="3.1. Event Concept Discovery"></a>3.1. Event Concept Discovery</h3><p>为图片生成一个简短的表示 </p>
+<ul>
+<li><p>从维基上挑选150 generic social events<br>每个events从flicker上挑选200张图片 收集这些图片的tag ，tag的分割</p>
+</li>
+<li><p>通过谷歌的数据集，为每个event选择20个最近的neighbor</p>
+</li>
+<li><p>将谷歌和flicker的segments结合</p>
+</li>
+</ul>
+<p>最终有856个event concepts,concept不仅包含物体，场景和动作，也包含下属的events和他们的类型</p>
+<h3 id="3-2-Training-Concept-Classifiers"><a href="#3-2-Training-Concept-Classifiers" class="headerlink" title="3.2. Training Concept Classifiers"></a>3.2. Training Concept Classifiers</h3><p>比起直接用深度CNN feature把图片分到对应的events类中用有限的训练数据，我们的方法要好。<br>给一个concepts的集合，每个concept，从维基上找到前100个图片，但是相似的concept，检索出来的图片会重合<br>解决：对所有的concepts进行聚类，用minibatch k最近邻法<br>对第i个concept 我们获得了y-size的聚类<br>这样聚类是为了挑选训练图片</p>
+<h3 id="3-3-Predicting-Concept-Scores-for-Classification"><a href="#3-3-Predicting-Concept-Scores-for-Classification" class="headerlink" title="3.3. Predicting Concept Scores for Classification"></a>3.3. Predicting Concept Scores for Classification</h3><p>总体的准确率要高</p>
+<h3 id="不了解的概念"><a href="#不了解的概念" class="headerlink" title="不了解的概念"></a>不了解的概念</h3><p>训练方法较传统方法有何区别？<br>One shot learning？<br>简而言之就是用少量样本训练网络<br>word2vec space？<br>Unseen event catogories ？<br>the stickiness of a segment</p>
+<p>扩展阅读<br>transfer learning/zero shot learning 参考<a href="https://www.zhihu.com/question/53794313/answer/136861035" target="_blank" rel="external">罗浩.ZJU</a>的回答<br>zsl 就是训练两个网络，一个是输入到特征描述空间的网络，一个是特征描述空间到输出的网络。<br>比如说现在要进行三种语言之间的翻译，按照传统的方法需要训练至少六个网络，双向的话需要12个网络，但是现在我没有那么多样本，我只需要训练</p>
+<ul>
+<li>英语→特征空间→日语</li>
+<li>韩语→特征空间→英语<br>这两个网络，那么就可以自动学会</li>
+<li>韩语→特征空间→日语<br>这个翻译过程，我用许多小的样本就可以学习出一个能力非常强大的网络，我甚至都没有韩语到日语这个样本我就学会了这个过程，这就是zero shot learning<br>one shot learning的zero shot learning类似，只不过提供少量或一个样本</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/07/15/事件检测-paper/" data-id="cj543rnc70003h5oiy6xl6wpa" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PaperReading/">PaperReading</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/15/tensorflow1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          tensorflow学习： mnist 之softmax实现和CNN实现（1）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/15/人体动作识别调研/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/tensorflow学习/" style="font-size: 20px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 20px;">操作</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/07/15/2017:7:8/">随笔</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/15/tensorflow0/">tensorflow学习：神经网络基本概念形象理解</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/15/tensorflow1/">tensorflow学习： mnist 之softmax实现和CNN实现（1）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/15/事件检测-paper/">用少量训练数据实现单张图片的事件检测</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/15/人体动作识别调研/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

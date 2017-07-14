@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>tensorflow学习： mnist 之softmax实现和CNN实现（1） | 刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、softmax基本概念占位符一般用来做输入输出">
+<meta name="keywords" content="tensorflow学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tensorflow学习： mnist 之softmax实现和CNN实现（1）">
+<meta property="og:url" content="http://yoursite.com/2017/07/15/tensorflow1/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="一、softmax基本概念占位符一般用来做输入输出">
+<meta property="og:updated_time" content="2017-07-14T16:43:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tensorflow学习： mnist 之softmax实现和CNN实现（1）">
+<meta name="twitter:description" content="一、softmax基本概念占位符一般用来做输入输出">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tensorflow1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/15/tensorflow1/" class="article-date">
+  <time datetime="2017-07-14T16:43:23.000Z" itemprop="datePublished">2017-07-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tensorflow学习： mnist 之softmax实现和CNN实现（1）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、softmax"><a href="#一、softmax" class="headerlink" title="一、softmax"></a>一、softmax</h3><h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a><strong>基本概念</strong></h4><h4 id="占位符"><a href="#占位符" class="headerlink" title="占位符"></a><strong>占位符</strong></h4><p>一般用来做输入输出<br><a id="more"></a></p>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a><strong>变量</strong></h4><p>一个变量代表着TensorFlow计算图中的一个值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">W = tf.Variable(tf.zeros([784,10]))</div><div class="line">b = tf.Variable(tf.zeros([10]))</div></pre></td></tr></table></figure></p>
+<h4 id="类别预测与损失函数"><a href="#类别预测与损失函数" class="headerlink" title="类别预测与损失函数"></a><strong>类别预测与损失函数</strong></h4><p>定义输出分类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">y = tf.nn.softmax(tf.matmul(x,W) + b)</div></pre></td></tr></table></figure></p>
+<p>指定损失函数</p>
+<h4 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a><strong>训练模型</strong></h4><p>1.设置迭代方法，步长<br>TensorFlow有大量内置的优化算法 这个例子中，我们用最速下降法让交叉熵下降，步长为0.01.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">train_step=tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)</div></pre></td></tr></table></figure>
+<p>2.开始迭代<br>返回的train_step操作对象，在运行时会使用梯度下降来更新参数。因此，整个模型的训练可以通过反复地运行train_step来完成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for i in range(1000):</div><div class="line">  batch = mnist.train.next_batch(50)</div><div class="line">  train_step.run(feed_dict=&#123;x: batch[0], y_: batch[1]&#125;)</div></pre></td></tr></table></figure>
+<h3 id="评估模型"><a href="#评估模型" class="headerlink" title="评估模型"></a>评估模型</h3><h4 id="计算误差"><a href="#计算误差" class="headerlink" title="计算误差"></a><strong>计算误差</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))</div></pre></td></tr></table></figure>
+<p>tf.argmax 是一个非常有用的函数，它能给出某个tensor对象在某一维上的其数据最大值所在的索引值<br>比如tf.argmax(y,1)返回的是模型对于任一输入x预测到的标签值，而 tf.argmax(y_,1) 代表正确的标签，我们可以用 tf.equal 来检测我们的预测是否真实标签匹配(索引位置一样表示匹配)。</p>
+<h4 id="构建Softmax-回归模型"><a href="#构建Softmax-回归模型" class="headerlink" title="构建Softmax 回归模型"></a><strong>构建Softmax 回归模型</strong></h4><h3 id="二、CNN"><a href="#二、CNN" class="headerlink" title="二、CNN"></a>二、CNN</h3><h4 id="卷积-池化的代码解析"><a href="#卷积-池化的代码解析" class="headerlink" title="卷积/池化的代码解析"></a><strong>卷积/池化的代码解析</strong></h4><p>卷积，输入图片和卷积核</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def conv2d(x, W):</div><div class="line">  return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding=&apos;SAME&apos;) //x是图片，W是卷积核</div></pre></td></tr></table></figure>
+<p>Pooling是取矩阵中的最大值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def max_pool_2x2(x):</div><div class="line">  return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],</div><div class="line">                        strides=[1, 2, 2, 1], padding=&apos;SAME&apos;)</div></pre></td></tr></table></figure>
+<p>ksize就是filter, 看第二个和第三个参数，表示为2X2大小。<br>第一个参数代表batch的数量，一般为1，第4个参数代表了channel，因为图片是有颜色channel的，一般为3个channel，因为我们这里是灰色的图片，所以这里为1。<br>stride和ksize是一一对应的这里的第二个参数2代表了每次在height方向上面的移动距离，第三个参数代表在width方向上面的移动距离。最后我们取出每个映射矩阵中的最大值！</p>
+<h4 id="卷积层代码解析"><a href="#卷积层代码解析" class="headerlink" title="卷积层代码解析"></a><strong>卷积层代码解析</strong></h4><h4 id="1、初始化"><a href="#1、初始化" class="headerlink" title="1、初始化"></a>1、初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">W_conv1 = weight_variable([5, 5, 1, 32])   5x5，patch大小，1，输入通道，32输出通道，即输出32个feature</div><div class="line">b_conv1 = bias_variable([32]) 每一个输出通道都有一个对应的偏置量</div></pre></td></tr></table></figure>
+<h4 id="2、卷积"><a href="#2、卷积" class="headerlink" title="2、卷积"></a>2、卷积</h4><p>权重就是卷积核<br>x_image = tf.reshape(x, [-1,28,28,1])把x变成一个4d向量，其第2、第3维对应图片的宽、高，最后一维代表图片的颜色通道数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)</div><div class="line">h_pool1 = max_pool_2x2(h_conv1)</div></pre></td></tr></table></figure>
+<p>我们把x_image和权值向量进行卷积，加上偏置项，然后应用ReLU激活函数，最后进行max pooling。</p>
+<h4 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a><strong>全连接层</strong></h4><h4 id="首先设置该层的权重和偏置"><a href="#首先设置该层的权重和偏置" class="headerlink" title="首先设置该层的权重和偏置"></a>首先设置该层的权重和偏置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> W_fc1 = weight_variable([7 * 7 * 64, 1024]) 输入和输出</div><div class="line">b_fc1 = bias_variable([1024])</div><div class="line">全连接</div><div class="line">h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64]) 将上一层的输出reshape成一维向量</div><div class="line">h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1) matmul矩阵  相乘</div></pre></td></tr></table></figure>
+<h4 id="dropout"><a href="#dropout" class="headerlink" title="dropout"></a>dropout</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">keep_prob = tf.placeholder(&quot;float&quot;)</div><div class="line">h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)</div></pre></td></tr></table></figure>
+<p>tensorflow中的dropout就是：使输入tensor中某些元素变为0，其它没变0的元素变为原来的1/keep_prob</p>
+<h4 id="输出层解析"><a href="#输出层解析" class="headerlink" title="输出层解析"></a><strong>输出层解析</strong></h4><p>输入1024，输出10</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">W_fc2 = weight_variable([1024, 10])</div><div class="line">b_fc2 = bias_variable([10])</div><div class="line">y_conv=tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)</div></pre></td></tr></table></figure>
+<p>逻辑回归，二分类问题，softmax，多分类问题<br>最大化后验概率的似然函数。对似然函数（或是损失函数）求偏导<br>以上均为网络设置，下面才是正在训练的开始</p>
+<h4 id="训练过程代码解析"><a href="#训练过程代码解析" class="headerlink" title="训练过程代码解析"></a><strong>训练过程代码解析</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">cross_entropy = -tf.reduce_sum(y_*tf.log(y_conv))// 计算所有图片的交叉熵</div><div class="line">train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)</div><div class="line">//最小化交叉熵</div><div class="line">correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(y_,1))</div><div class="line">//判断预测值与真实值是否相同</div><div class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, &quot;float&quot;))</div><div class="line">//计算准确率，reduce_mean求平均值</div><div class="line">sess.run(tf.initialize_all_variables())</div><div class="line">//初始化所有变量</div><div class="line">for i in range(20000):</div><div class="line">  batch = mnist.train.next_batch(50)</div><div class="line">  //每一步迭代，加载50个训练样本，然后执行一次train_step</div><div class="line">  if i%100 == 0:</div><div class="line">    train_accuracy = accuracy.eval(feed_dict=&#123;</div><div class="line">        x:batch[0], y_: batch[1], keep_prob: 1.0&#125;)</div><div class="line">    print &quot;step %d, training accuracy %g&quot;%(i, train_accuracy)</div><div class="line">  //每一百次输出训练结果</div><div class="line">  train_step.run(feed_dict=&#123;x: batch[0], y_: batch[1], keep_prob: 0.5&#125;)//最终要的是这一步！！！！！！</div><div class="line">  //通过feed_dict将x 和 y_张量占位符用训练训练数据替代，可以用feed_dict来替代任何张量  ，在feed_dict中加入额外的参数keep_prob来控制dropout比例</div><div class="line"></div><div class="line">print &quot;test accuracy %g&quot;%accuracy.eval(feed_dict=&#123;</div><div class="line">    x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0&#125;)</div><div class="line">//:怎么知道mnist.test.image是什么</div><div class="line">// accuracy.eval在哪里定义的</div></pre></td></tr></table></figure>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>softmax的具体概念？</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/07/15/tensorflow1/" data-id="cj543rnc10001h5oibts70u7f" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/15/tensorflow0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          tensorflow学习：神经网络基本概念形象理解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/15/事件检测-paper/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">用少量训练数据实现单张图片的事件检测</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/tensorflow学习/" style="font-size: 20px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 20px;">操作</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/07/15/2017:7:8/">随笔</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/15/tensorflow0/">tensorflow学习：神经网络基本概念形象理解</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/15/tensorflow1/">tensorflow学习： mnist 之softmax实现和CNN实现（1）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/15/事件检测-paper/">用少量训练数据实现单张图片的事件检测</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/15/人体动作识别调研/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
