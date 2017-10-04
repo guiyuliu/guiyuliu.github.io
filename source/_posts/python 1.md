@@ -1,6 +1,6 @@
-# python(1) python基础知识
+title: python(1) python基础知识
 
-标签： python
+tag: python
 
 ---
 ## 基础
