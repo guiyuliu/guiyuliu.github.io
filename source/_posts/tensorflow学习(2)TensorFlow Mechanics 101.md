@@ -1,5 +1,5 @@
-title: tensorflow(2) TensorFlow Mechanics 101
-tag： tensorflow
+title: tensorflow(2)Tensor Flow Mechanics101
+tag: tensorflow
 
 ---
 参考 [TF英文社区](https://www.tensorflow.org/get_started/mnist/mechanics)[TF中文社区](http://www.tensorfly.cn/tfdoc/tutorials/mnist_tf.html)

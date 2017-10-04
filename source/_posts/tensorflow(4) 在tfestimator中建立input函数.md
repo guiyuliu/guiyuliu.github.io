@@ -1,5 +1,5 @@
-title: tensorflow(4) 在tf.estimator中建立input函数
-tag： tensorflow
+title: tensorflow(4)在tf.estimator中建立input函数
+tag: tensorflow
 
 ---
 [原文链接](https://www.tensorflow.org/get_started/input_fn)
