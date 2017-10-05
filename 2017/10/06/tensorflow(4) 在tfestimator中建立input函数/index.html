@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>tensorflow(4)在tf.estimator中建立input函数 | 刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="原文链接代码链接上一篇我们看了使用tf.estimator直接构建一个DNN分类器，但是数据load进来之后，输入分类器之前，还要经过一个input_fn的函数。这篇文章会教你怎么用input_fn来喂给一个神经网络回归器数据。">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tensorflow(4)在tf.estimator中建立input函数">
+<meta property="og:url" content="http://yoursite.com/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="原文链接代码链接上一篇我们看了使用tf.estimator直接构建一个DNN分类器，但是数据load进来之后，输入分类器之前，还要经过一个input_fn的函数。这篇文章会教你怎么用input_fn来喂给一个神经网络回归器数据。">
+<meta property="og:image" content="http://img.blog.csdn.net/20170919165039685?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzYwODMzNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170919165102807?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzYwODMzNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-10-05T17:44:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tensorflow(4)在tf.estimator中建立input函数">
+<meta name="twitter:description" content="原文链接代码链接上一篇我们看了使用tf.estimator直接构建一个DNN分类器，但是数据load进来之后，输入分类器之前，还要经过一个input_fn的函数。这篇文章会教你怎么用input_fn来喂给一个神经网络回归器数据。">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170919165039685?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzYwODMzNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tensorflow(4) 在tfestimator中建立input函数" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/" class="article-date">
+  <time datetime="2017-10-05T17:44:25.000Z" itemprop="datePublished">2017-10-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tensorflow(4)在tf.estimator中建立input函数
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.tensorflow.org/get_started/input_fn" target="_blank" rel="external">原文链接</a><br><a href="https://github.com/tensorflow/tensorflow/blob/r1.3/tensorflow/examples/tutorials/input_fn/boston.py" target="_blank" rel="external">代码链接</a><br>上一篇我们看了使用tf.estimator直接构建一个DNN分类器，但是数据load进来之后，输入分类器之前，还要经过一个input_fn的函数。<br>这篇文章会教你怎么用input_fn来喂给一个神经网络回归器数据。<br><a id="more"></a></p>
+<h2 id="1-把feature-data转换为tensor"><a href="#1-把feature-data转换为tensor" class="headerlink" title="1.把feature data转换为tensor"></a>1.把feature data转换为tensor</h2><p>如果你的feature/label数据是python array ，或者存在pandas dataframe 或者numpy array中，可以用下面的方法构建inputfn函数</p>
+<h3 id="pass-inputfn-data-to-your-model"><a href="#pass-inputfn-data-to-your-model" class="headerlink" title="pass inputfn data to  your model"></a>pass inputfn data to  your model</h3><p>直接把input function作为参数输入train op，注意input fn是作为一个object 传入，而不是作为一个函数被调用，要不然会发生typeerror<br>即使要修改inputfn的参数，也不能这样用，有其他的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">classifier.train(input_fn=my_input_fn, steps=2000) 正确</div><div class="line">classifier.train(input_fn=my_input_fn(training_set), steps=2000) 错误</div></pre></td></tr></table></figure>
+<p>即inputfn在输入的时候不能调参，必须在定义的时候被设置到加载哪个数据集<br>若果不想重复定义，比如inputfntrain，inputfntest，inputfnevaluate<br>可以用以下四种方法</p>
+<h4 id="1-、用一个包装函数"><a href="#1-、用一个包装函数" class="headerlink" title="(1)、用一个包装函数"></a>(1)、用一个包装函数</h4><p> my_input_fn_training_set()，感觉也没简单多少<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def my_input_fn(data_set):</div><div class="line">  ...</div><div class="line"></div><div class="line">def my_input_fn_training_set():</div><div class="line">  return my_input_fn(training_set)</div><div class="line"></div><div class="line">classifier.train(input_fn=my_input_fn_training_set, steps=2000)</div></pre></td></tr></table></figure></p>
+<h4 id="2-、创建一个固定参数的function-obeject"><a href="#2-、创建一个固定参数的function-obeject" class="headerlink" title="(2)、创建一个固定参数的function obeject"></a>(2)、创建一个固定参数的function obeject</h4><p>用python的functools.partial函数创建一个function object<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">classifier.train(</div><div class="line">    input_fn=functools.partial(my_input_fn, data_set=training_set),</div><div class="line">    steps=2000)</div></pre></td></tr></table></figure></p>
+<h4 id="3-、讲input-fn包装成lambda"><a href="#3-、讲input-fn包装成lambda" class="headerlink" title="(3)、讲input_fn包装成lambda"></a>(3)、讲input_fn包装成lambda</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">classifier.train(input_fn=lambda: my_input_fn(training_set), steps=2000)</div></pre></td></tr></table></figure>
+<h4 id="4-、使用tf-estimator-inputs-来创键inputfn"><a href="#4-、使用tf-estimator-inputs-来创键inputfn" class="headerlink" title="(4)、使用tf.estimator.inputs 来创键inputfn"></a>(4)、使用tf.estimator.inputs 来创键inputfn</h4><p>这种方法额外的好处是可以设置其他的参数，比如设置num_epoch和shuffle来控制inputfn如何在data 上迭代。<br> <code>tf.estimator.inputs.pandas_input_fn()</code>和<code>tf.estimator.numpy_input_fn()</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">import pandas as pd</div><div class="line"></div><div class="line">def get_input_fn_from_pandas(data_set, num_epochs=None, shuffle=True):</div><div class="line">  return tf.estimator.inputs.pandas_input_fn(</div><div class="line">      x=pdDataFrame(...),</div><div class="line">      y=pd.Series(...),</div><div class="line">      num_epochs=num_epochs,</div><div class="line">      shuffle=shuffle)</div><div class="line">import numpy as np</div><div class="line"></div><div class="line">def get_input_fn_from_numpy(data_set, num_epochs=None, shuffle=True):</div><div class="line">  return tf.estimator.inputs.numpy_input_fn(</div><div class="line">      x=&#123;...&#125;,</div><div class="line">      y=np.array(...),</div><div class="line">      num_epochs=num_epochs,</div><div class="line">      shuffle=shuffle)</div></pre></td></tr></table></figure></p>
+<h2 id="2-Boston房价神经网络模型"><a href="#2-Boston房价神经网络模型" class="headerlink" title="2.Boston房价神经网络模型"></a>2.Boston房价神经网络模型</h2><h3 id="1-导入房屋数据"><a href="#1-导入房屋数据" class="headerlink" title="(1) 导入房屋数据"></a>(1) 导入房屋数据</h3><p>定义COLUMNS，FEATURES，LABEL<br>定义成list，label定义成字符串</p>
+<p>用pd.read_csv读入数据<br>参数意义 ?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">COLUMNS = [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;, &quot;age&quot;,</div><div class="line">           &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;, &quot;medv&quot;]</div><div class="line">FEATURES = [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;,</div><div class="line">            &quot;age&quot;, &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;]</div><div class="line">LABEL = &quot;medv&quot;</div><div class="line"></div><div class="line">training_set = pd.read_csv(&quot;boston_train.csv&quot;, skipinitialspace=True,</div><div class="line">                           skiprows=1, names=COLUMNS)</div><div class="line">    # names:</div><div class="line">    # return:</div><div class="line">test_set = pd.read_csv(&quot;boston_test.csv&quot;, skipinitialspace=True,</div><div class="line">                       skiprows=1, names=COLUMNS)</div><div class="line">prediction_set = pd.read_csv(&quot;boston_predict.csv&quot;, skipinitialspace=True,</div><div class="line">                             skiprows=1, names=COLUMNS)</div></pre></td></tr></table></figure></p>
+<p>pd.read_csv之后如下图所示<br><img src="http://img.blog.csdn.net/20170919165039685?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzYwODMzNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<h3 id="2-定义FeatureColumns-and-creating-the-regressor"><a href="#2-定义FeatureColumns-and-creating-the-regressor" class="headerlink" title="(2) 定义FeatureColumns and creating the regressor"></a>(2) 定义FeatureColumns and creating the regressor</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">feature_cols = [tf.feature_column.numeric_column(k) for k in FEATURES]</div></pre></td></tr></table></figure>
+<p>读入进来的feature_clos只是八个空的，如下图<br><img src="http://img.blog.csdn.net/20170919165102807?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzYwODMzNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>要想了解一下feature_colmn对于 categorical data的用法，看后面的Linear model Tutorial<br>现在，创建一个DNN回归器，只需要传入两个参数，feature_columns和hidden_units<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">regressor = tf.estimator.DNNRegressor(feature_columns=feature_cols,</div><div class="line">                                      hidden_units=[10, 10],  #two hiden layer with 10 nodes each</div><div class="line">                                      model_dir=&quot;/tmp/boston_model&quot;)</div></pre></td></tr></table></figure></p>
+<h3 id="3-building-the-input-fn"><a href="#3-building-the-input-fn" class="headerlink" title="(3) building the input_fn"></a>(3) building the input_fn</h3><p>使用了上面的第四种方法，tf.estimator.input来创建input_fn<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def get_input_fn(data_set, num_epochs=None, shuffle=True):</div><div class="line">  return tf.estimator.inputs.pandas_input_fn(</div><div class="line">      x=pd.DataFrame(&#123;k: data_set[k].values for k in FEATURES&#125;),</div><div class="line">      y = pd.Series(data_set[LABEL].values),</div><div class="line">      num_epochs=num_epochs,</div><div class="line">      shuffle=shuffle)</div></pre></td></tr></table></figure></p>
+<p>利用这个函数，就可以将不同的data_set传入<br>另外两个参数<br>num_epochs: training 设为None ，这样input_fn会持续返回数据，直到达到训练步数为止<br>evaluation 和predict 设置为1 ，这样input_fn只迭代数据一次<br>shuffle: 洗牌<br>train：设置为 True<br>predict和evaluate 设置为False，所以input_fn按顺序迭代数据</p>
+<h3 id="4-train"><a href="#4-train" class="headerlink" title="(4) train"></a>(4) train</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">regressor.train(input_fn=get_input_fn(training_set), steps=5000)</div></pre></td></tr></table></figure>
+<h3 id="5-evaluate"><a href="#5-evaluate" class="headerlink" title="(5)evaluate"></a>(5)evaluate</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ev = regressor.evaluate(</div><div class="line">    input_fn=get_input_fn(test_set, num_epochs=1, shuffle=False))</div><div class="line">    </div><div class="line">loss_score = ev[&quot;loss&quot;]</div><div class="line">print(&quot;Loss: &#123;0:f&#125;&quot;.format(loss_score))</div></pre></td></tr></table></figure>
+<h3 id="6-predict"><a href="#6-predict" class="headerlink" title="(6)predict"></a>(6)predict</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">y = regressor.predict(</div><div class="line">    input_fn=get_input_fn(prediction_set, num_epochs=1, shuffle=False))</div><div class="line"># .predict() returns an iterator of dicts; convert to a list and print</div><div class="line"># predictions</div><div class="line">predictions = list(p[&quot;predictions&quot;] for p in itertools.islice(y, 6))</div><div class="line">print(&quot;Predictions: &#123;&#125;&quot;.format(str(predictions)))</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/" data-id="cj8er59m0000g8ooiftkhfcun" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          tensorflow(2)Tensor Flow Mechanics101
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/06/tensorflow(3)  tfestimator/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">tensorflow(3)tf.estimator</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/tensorflow学习/" style="font-size: 10px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 10px;">操作</a> <a href="/tags/文章复现/" style="font-size: 10px;">文章复现</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/06/LRCN(1)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/">tensorflow(2)Tensor Flow Mechanics101</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/">tensorflow(4)在tf.estimator中建立input函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(3)  tfestimator/">tensorflow(3)tf.estimator</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/python(4) list生成式/">python(4) list生成式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>C3D(2)训练 train_c3d_ucf101.py代码详解 | 刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="运行函数12345def main(_):  run_training() if __name__ == &amp;apos;__main__&amp;apos;:  #这句话  tf.app.run()  ##app?">
+<meta name="keywords" content="文章复现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C3D(2)训练 train_c3d_ucf101.py代码详解">
+<meta property="og:url" content="http://yoursite.com/2017/08/20/C3D(2)/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="运行函数12345def main(_):  run_training() if __name__ == &amp;apos;__main__&amp;apos;:  #这句话  tf.app.run()  ##app?">
+<meta property="og:updated_time" content="2017-08-20T12:49:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C3D(2)训练 train_c3d_ucf101.py代码详解">
+<meta name="twitter:description" content="运行函数12345def main(_):  run_training() if __name__ == &amp;apos;__main__&amp;apos;:  #这句话  tf.app.run()  ##app?">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-C3D(2)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/20/C3D(2)/" class="article-date">
+  <time datetime="2017-08-20T10:44:31.000Z" itemprop="datePublished">2017-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      C3D(2)训练 train_c3d_ucf101.py代码详解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>运行函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def main(_):</div><div class="line">  run_training() </div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:  #这句话</div><div class="line">  tf.app.run()  ##app?</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h2 id="1-python库"><a href="#1-python库" class="headerlink" title="1. python库"></a>1. python库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import os  ＃</div><div class="line">import time</div><div class="line">import numpy</div><div class="line">from six.moves import xrange  # pylint: disable=redefined-builtin   ？</div><div class="line">import tensorflow as tf</div><div class="line">import input_data  ＃</div><div class="line">import c3d_model   ＃</div><div class="line">import math</div><div class="line">import numpy as np</div></pre></td></tr></table></figure>
+<p>input_data.py是处理输入数据，下载mnist数据集？具体没看懂<br>c3d_model.py是网络结构</p>
+<h2 id="2-run-training-函数"><a href="#2-run-training-函数" class="headerlink" title="2.run_training 函数"></a>2.run_training 函数</h2><h3 id="sec1-初始化"><a href="#sec1-初始化" class="headerlink" title="sec1 初始化"></a>sec1 初始化</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">with tf.Graph().as_default():</div><div class="line">  global_step = tf.get_variable(</div><div class="line">                  &apos;global_step&apos;,</div><div class="line">                  [],</div><div class="line">                  initializer=tf.constant_initializer(0),</div><div class="line">                  trainable=False</div><div class="line">                  )</div><div class="line">  images_placeholder, labels_placeholder = placeholder_inputs(</div><div class="line">                  FLAGS.batch_size * gpu_num</div><div class="line">                  )</div></pre></td></tr></table></figure>
+<p><code>.as_default():</code>默认图示什么图？</p>
+<p>函数<code>placeholder_inputs</code><br>输入：batch_size<br>输出：images_placeholder, labels_placeholder</p>
+<h3 id="sec2-几个变量"><a href="#sec2-几个变量" class="headerlink" title="sec2 几个变量"></a>sec2 几个变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">tower_grads1 = []-</div><div class="line">tower_grads2 = []</div><div class="line">logits = []</div><div class="line">opt1 = tf.train.AdamOptimizer(1e-4)</div><div class="line">opt2 = tf.train.AdamOptimizer(2e-4)</div></pre></td></tr></table></figure>
+<p> 这几个变量的意思<br> tower_grads1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">grads1 = opt1.compute_gradients(loss, varlist1)</div><div class="line">tower_grads1.append(grads1)  ＃变量赋值为空数组，就相当于生成了改数组类型的一个对象，可以直接调用函数？</div><div class="line">grads1 = average_gradients(tower_grads1)</div></pre></td></tr></table></figure></p>
+<p>opt1<br>设置训练优化器为AdamOptimizer，后面的参数是什么意思 （tensorflow总共有哪些优化器？）</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h2 id="import-os"><a href="#import-os" class="headerlink" title="import os"></a>import os</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/08/20/C3D(2)/" data-id="cj6klve940000knoiosge17lk" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/06/c++(1) 类模板-构造函数-捕获异常实例/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          c++(1) 类模板/构造函数/捕获异常 实例
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/20/C3D(1)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">C3D(1)代码使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/tensorflow学习/" style="font-size: 10px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 10px;">操作</a> <a href="/tags/文章复现/" style="font-size: 10px;">文章复现</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/06/LRCN(1)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/">tensorflow(2)Tensor Flow Mechanics101</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/">tensorflow(4)在tf.estimator中建立input函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(3)  tfestimator/">tensorflow(3)tf.estimator</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/python(4) list生成式/">python(4) list生成式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

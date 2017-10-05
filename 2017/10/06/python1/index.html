@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python(1) python基础知识 | 刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="基础注意事项python编辑器推荐notepad++或者sublime，windows下不推荐word或者自带文本编辑器，因为word存储的不是文本格式，而文本编辑器会自作聪明的在前面加上UTF8-BOM 输入输出输出 print输入 python提供了a=raw_input()函数将输入存为字符串，保存进一个变量">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python(1) python基础知识">
+<meta property="og:url" content="http://yoursite.com/2017/10/06/python1/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="基础注意事项python编辑器推荐notepad++或者sublime，windows下不推荐word或者自带文本编辑器，因为word存储的不是文本格式，而文本编辑器会自作聪明的在前面加上UTF8-BOM 输入输出输出 print输入 python提供了a=raw_input()函数将输入存为字符串，保存进一个变量">
+<meta property="og:updated_time" content="2017-10-05T17:44:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python(1) python基础知识">
+<meta name="twitter:description" content="基础注意事项python编辑器推荐notepad++或者sublime，windows下不推荐word或者自带文本编辑器，因为word存储的不是文本格式，而文本编辑器会自作聪明的在前面加上UTF8-BOM 输入输出输出 print输入 python提供了a=raw_input()函数将输入存为字符串，保存进一个变量">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/06/python1/" class="article-date">
+  <time datetime="2017-10-05T17:44:25.000Z" itemprop="datePublished">2017-10-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python(1) python基础知识
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>python编辑器推荐notepad++或者sublime，windows下不推荐word或者自带文本编辑器，因为word存储的不是文本格式，而文本编辑器会自作聪明的在前面加上UTF8-BOM</p>
+<h3 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h3><p>输出 print<br>输入 python提供了<code>a=raw_input()</code>函数将输入存为字符串，保存进一个变量<br><a id="more"></a><br>raw_input读入的数字也会是字符串的形式，如果读入一个整数，要先把字符串用int()转换成整数， a=int(raw_input(‘input an integer:’))</p>
+<h3 id="字符串和编码"><a href="#字符串和编码" class="headerlink" title="字符串和编码"></a>字符串和编码</h3><p>存储的时候会用utf-8变长码方式编码，而在内存中是用Unicode的方式编码</p>
+<h3 id="列表list和元组tuple"><a href="#列表list和元组tuple" class="headerlink" title="列表list和元组tuple"></a>列表list和元组tuple</h3><p>列表用方括号，元组用圆括号<br>获取列表长度 <code>len(list)</code><br>列表从0开始计数<br>删除元素<code>list.pop(i)</code><br>在后面增加元素<code>list.append()</code><br>在指定序号增加元素<code>list.insert(2,&#39;a&#39;)</code><br>将某一个元素赋值为另一个值<code>list[2]=&#39;y&#39;</code><br>list里的元素可以是数字、字符串、布尔，也可以是list,如下所示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">list=[&apos;aa&apos;,123,True,[&apos;xx&apos;,&apos;yy&apos;]]</div><div class="line">list[3][1]=&apos;yy&apos;</div></pre></td></tr></table></figure></p>
+<p>获取list的最后一个元素是list[-1]</p>
+<p>元组<br>元组的元素不能增、删、改<br>如果元组里的元素有一个list，那么我们可以改变list里的值，为什么这里又能变呢，因为元组指向的list是不变的<br>创建只有一个元素的元组时，必须要加逗号<code>t=(1,)</code>,如果写<code>t=(1)</code>,python就会理解成<code>t=1</code></p>
+<h3 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h3><p>elif是else if的缩写，条件判断是从上往下判断，只要碰到正确的了，剩下的条件就不再判断了。</p>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>for .. in .. 循环<br>for x in  ，就是把list/tuple中的每一个元素代入进x，然后执行语句</p>
+<p>while循环<br>一般会放在循环体内部自减，自增。</p>
+<h3 id="dict字典"><a href="#dict字典" class="headerlink" title="dict字典"></a>dict字典</h3><p>很好理解，有一个索引key，索引里对应着一个值value，用大括号括起来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">d = &#123;&apos;Michael&apos;: 95, &apos;Bob&apos;: 75, &apos;Tracy&apos;: 85&#125;</div></pre></td></tr></table></figure></p>
+<p>删除里面的元素也是dict.pop(‘’),直接删除key，会把对应的value也删除掉<br>赋值的时候dict[‘x’]=11</p>
+<p>dict一个最大的特点就是方便查找，查找的时候有两种方法，一种是in，一种是get<br>‘Thomas’ in dict<br>如果存在就会返回对应的值,不存在就返回False</p>
+<p>dict.get(‘Thomas’)<br>如果存在就会返回对应的值，如果不存在就返回None，None在命令行里面什么都不显示</p>
+<p>set 和dict差不多，但是只存储键，不能存储value<br>创建一个set的时候要传入一个list<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a=set([1,2,3,4])</div><div class="line">a</div><div class="line">&#123;1,2,3&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="递归函数"><a href="#递归函数" class="headerlink" title="递归函数"></a>递归函数</h3><p>在函数内部可以调用其他函数，在函数内部调用自己的，称为递归函数。最简单的递归函数就是N的阶乘fact(n)=n*fact(n-1)</p>
+<p>因为函数每调用一次，在内存中栈就会增加一层，每返回一次，就会减少一层，所以当递归次数增多时，可能会导致栈溢出</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="with"><a href="#with" class="headerlink" title="with"></a>with</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">with  xxx:</div><div class="line">     with-body</div></pre></td></tr></table></figure>
+<p>上下文管理器 ,执行的时候调用enter ，执行完with-body 之后调用 exit</p>
+<p>###<br><code>sys.modules</code>是一个字典，它包含了从 Python 开始运行起，被导入的所有模块。</p>
+<p><code>&quot;I&#39;m %s. I&#39;m %d year old&quot;</code> 为我们的模板。%s为第一个格式符，表示一个字符串。%d为第二个格式符，表示一个整数。(‘Vamei’, 99)的两个元素’Vamei’和99为替换%s和%d的真实值。 </p>
+<p><code>assert condition</code><br>trigger an error if the condition is false.</p>
+<p> <code>_variable_with_weight_decay</code>变量函数前加下划线<br>单下划线开头，这个被常用于模块中，在一个模块中以单下划线开头的变量和函数被默认当作内部函数，如果使用 from a_module import * 导入时，这部分变量和函数不会被导入。不过值得注意的是，如果使用 import a_module </p>
+<p>Python主要有三种数据类型：字典、列表、元组。其分别由花括号，中括号，小括号表示。<br>如：<br><code>字典：dic={&#39;a&#39;:12,&#39;b&#39;:34}</code><br>字典的每个键值(key=&gt;value)对用冒号(:)分割，每个对之间用逗号(,)分割，整个字典包括在花括号({})中 ,格式如下所示：<br>d = {key1 : value1, key2 : value2 }<br>列表：<code>list=[1,2,3,4]</code><br>元组：<code>tup=(1,2,3,4)</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/06/python1/" data-id="cj8er59lt00088ooirlhhsren" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/06/python(5) 进程和线程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          python(5) 进程和线程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/06/python(3) 切片迭代/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">python(3) 切片，迭代</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/tensorflow学习/" style="font-size: 10px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 10px;">操作</a> <a href="/tags/文章复现/" style="font-size: 10px;">文章复现</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/06/LRCN(1)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/">tensorflow(2)Tensor Flow Mechanics101</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/">tensorflow(4)在tf.estimator中建立input函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(3)  tfestimator/">tensorflow(3)tf.estimator</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/python(4) list生成式/">python(4) list生成式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

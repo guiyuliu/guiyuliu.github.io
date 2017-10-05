@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>tensorflow(2)Tensor Flow Mechanics101 | 刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="参考 TF英文社区TF中文社区 fully_connected_feed.py 是总体的运行过程mnist.py中定义了四个函数，inference，training，loss，evaluation mnist.py一、inference就是网络结构函数，mnist.py中的inference定义的网络有一对全连接层，和一个有10个线性节点的线性层  input:inference输入placeh">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tensorflow(2)Tensor Flow Mechanics101">
+<meta property="og:url" content="http://yoursite.com/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="参考 TF英文社区TF中文社区 fully_connected_feed.py 是总体的运行过程mnist.py中定义了四个函数，inference，training，loss，evaluation mnist.py一、inference就是网络结构函数，mnist.py中的inference定义的网络有一对全连接层，和一个有10个线性节点的线性层  input:inference输入placeh">
+<meta property="og:updated_time" content="2017-10-05T17:44:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tensorflow(2)Tensor Flow Mechanics101">
+<meta name="twitter:description" content="参考 TF英文社区TF中文社区 fully_connected_feed.py 是总体的运行过程mnist.py中定义了四个函数，inference，training，loss，evaluation mnist.py一、inference就是网络结构函数，mnist.py中的inference定义的网络有一对全连接层，和一个有10个线性节点的线性层  input:inference输入placeh">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tensorflow学习(2)TensorFlow Mechanics 101" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/" class="article-date">
+  <time datetime="2017-10-05T17:44:25.000Z" itemprop="datePublished">2017-10-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tensorflow(2)Tensor Flow Mechanics101
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参考 <a href="https://www.tensorflow.org/get_started/mnist/mechanics" target="_blank" rel="external">TF英文社区</a><a href="http://www.tensorfly.cn/tfdoc/tutorials/mnist_tf.html" target="_blank" rel="external">TF中文社区</a></p>
+<p>fully_connected_feed.py 是总体的运行过程<br>mnist.py中定义了四个函数，inference，training，loss，evaluation</p>
+<h2 id="mnist-py"><a href="#mnist-py" class="headerlink" title="mnist.py"></a>mnist.py</h2><h3 id="一、inference"><a href="#一、inference" class="headerlink" title="一、inference"></a>一、inference</h3><p>就是网络结构函数，mnist.py中的inference定义的网络有一对全连接层，和一个有10个线性节点的线性层</p>
+<ul>
+<li>input:inference输入placeholder和第一层，第二层网络hidden units的个数<a id="more"></a></li>
+<li><p>每一层都有唯一的name_scope，所有的item都创建在这个namescope下，相当于给这一层的所有item加了一个前缀</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">with tf.name_scope(&apos;hidden1&apos;):</div></pre></td></tr></table></figure>
+</li>
+<li><p>在每一个scope中，weight和biase由tf.Variable生成，大小根据（输入输出）的维度设置<br>weight=[connect from,connect to]<br>biase=[connect to]</p>
+</li>
+<li>每个变量在创建时，都会被给予一个初始化操作<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">weights = tf.Variable(</div><div class="line">    tf.truncated_normal([IMAGE_PIXELS, hidden1_units],</div><div class="line">                        stddev=1.0 / math.sqrt(float(IMAGE_PIXELS))),</div><div class="line">    name=&apos;weights&apos;)</div><div class="line">biases = tf.Variable(tf.zeros([hidden1_units]),</div><div class="line">                     name=&apos;biases&apos;)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>比如weights会用tf.truncated_normal初始化器，根据给定的均值和标准差生成一个随机分布<br>biase根据tf.zeros保证它们的初始值都是0。</p>
+<p>graph中主要有三个operation，两个tf.nn.relu和一个tf.matmul<br>最后，程序会返回包含了输出结果的logits Tensor。</p>
+<h3 id="二、loss"><a href="#二、loss" class="headerlink" title="二、loss"></a>二、loss</h3><p>loss() 也是graph的一部分，输入两个参数，神经网络的分类结果和labels正确结果。进行比较，计算损失。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def loss(logits, labels):</div><div class="line">  labels = tf.to_int64(labels)</div><div class="line">  cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(</div><div class="line">      labels=labels, logits=logits, name=&apos;xentropy&apos;)</div><div class="line">  return tf.reduce_mean(cross_entropy, name=&apos;xentropy_mean&apos;)</div></pre></td></tr></table></figure></p>
+<p>这个函数分为三步</p>
+<ul>
+<li>1.先将labels转换成所需要的格式<br><code>tf.to_int64(labels)</code>这个操作可以将labels抓换成指定的格式1-hot labels，<br>1-hot labels：例如，如果类标识符为“3”，那么该值就会被转换为：<br><code>[0, 0, 0, 1, 0, 0, 0, 0, 0, 0]</code><br>将inference的判断结果和labels进行比较</li>
+<li>2.利用函数tf.nn.sparse_softmax_cross_entropy_with_logits 计算交叉熵 </li>
+<li>3.计算一个batch的平均loss<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">loss = tf.reduce_mean(cross_entropy, name=&apos;xentropy_mean&apos;)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>tf.reduce_mean函数(可跨维度的计算平均值)，计算batch维度（第一维度）下交叉熵（cross entropy）的平均值，将将该值作为总损失</p>
+<h3 id="三、training"><a href="#三、training" class="headerlink" title="三、training"></a>三、training</h3><ul>
+<li>input: loss tensor ， learning rate<br>主要分为四步</li>
+<li>1、 创建一个summarizer， 用来更新损失，summary的值会被写在events file里面<br><code>tf.summary.scalar(&#39;loss&#39;, loss)</code></li>
+<li>2、创建一个optimizer优化器对象tf.train.GradientDescentOptimizer（设置学习率）</li>
+<li>3、创建global_step变量 ，用于记录全局训练步骤的单值</li>
+<li>4、开始优化 optimizer.minimize（输入loss 和 global step）</li>
+<li>return train_op</li>
+</ul>
+<h3 id="四、evaluation"><a href="#四、evaluation" class="headerlink" title="四、evaluation"></a>四、evaluation</h3><p>输入网络的分类结果和labels，和loss函数的输入一样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">def evaluation(logits, labels):</div><div class="line"></div><div class="line">  &quot;&quot;&quot;Evaluate the quality of the logits at predicting the label.</div><div class="line"></div><div class="line">  Args:</div><div class="line">    logits: Logits tensor, float - [batch_size, NUM_CLASSES].</div><div class="line">    labels: Labels tensor, int32 - [batch_size], with values in the</div><div class="line">      range [0, NUM_CLASSES).</div><div class="line"></div><div class="line">  Returns:</div><div class="line">    A scalar int32 tensor with the number of examples (out of batch_size)</div><div class="line">    that were predicted correctly.</div><div class="line">  &quot;&quot;&quot;</div><div class="line">  # For a classifier model, we can use the in_top_k Op.</div><div class="line">  # It returns a bool tensor with shape [batch_size] that is true for</div><div class="line">  # the examples where the label is in the top k (here k=1)</div><div class="line">  # of all logits for that example.</div><div class="line">  correct = tf.nn.in_top_k(logits, labels, 1)</div><div class="line">  # Return the number of true entries.</div><div class="line">  return tf.reduce_sum(tf.cast(correct, tf.int32))</div></pre></td></tr></table></figure></p>
+<h2 id="fully-connected-feed-py"><a href="#fully-connected-feed-py" class="headerlink" title="fully_connected_feed.py"></a>fully_connected_feed.py</h2><p>一旦图建立完之后，就可以在循环训练和评估<br>tensorflow/tensorflow/examples/tutorials/mnist/fully_connected_feed.py</p>
+<h3 id="总体步骤"><a href="#总体步骤" class="headerlink" title="总体步骤"></a>总体步骤</h3><p>1、设置输入<br>定义placeholder，函数<code>def placeholder_inputs(batch_size)</code><br>2、开始训练run_rainning</p>
+<ul>
+<li>读入数据集 </li>
+<li>建立图</li>
+<li>创建session</li>
+<li>初始化</li>
+<li>开始循环训练<ul>
+<li>check status</li>
+<li>do evaluation</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-place-holder"><a href="#1-place-holder" class="headerlink" title="1.place holder"></a>1.place holder</h3><h3 id="2-the-graph"><a href="#2-the-graph" class="headerlink" title="2.the graph"></a>2.the graph</h3><p>建图中所有的操作都是在<code>with tf.Graph（）.as_default()</code>下进行的<br>tf.graph可能会执行所有的ops，可以包含多个图，创建多个线程<br>我们只需要一个single graph</p>
+<h3 id="3-session"><a href="#3-session" class="headerlink" title="3.session"></a>3.session</h3><p>在定义完图后，需要创建一个会话session来开启这个图</p>
+<ul>
+<li>创建session <code>sess=tf.session()</code></li>
+<li>创建initializer, <code>initializer=tf.global_variables_initializer</code></li>
+<li>sess.run(initializer) 会自动初始化所有的变量</li>
+</ul>
+<h3 id="4-training-loop"><a href="#4-training-loop" class="headerlink" title="4.training loop"></a>4.training loop</h3><p>在变量初始化完成之后，就可以开始训练了<br>最简单的训练过程就以下两行代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">with step in xrange(FLAGS.max_Step)</div><div class="line">    sess.run(train_op)</div></pre></td></tr></table></figure></p>
+<p>但是本例子要复杂一点，读入的数据每一步都要进行切分，以适应之前生成的place_holder</p>
+<h4 id="1-fill-feed-dict"><a href="#1-fill-feed-dict" class="headerlink" title="(1).fill_feed_dict"></a>(1).fill_feed_dict</h4><p>先让image_feed和labels_feed去向dataset索要下一次训练的一个batchsize的数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">images_feed, labels_feed = data_set.next_batch(FLAGS.batch_size,</div><div class="line">                                               FLAGS.fake_data)</div></pre></td></tr></table></figure></p>
+<p>再讲这个数据整合成一个python字典的形式，image_placeholder 和labels_placeholder作为字典的key， image_feed和labels_feed作为字典的value<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">feed_dict = &#123;</div><div class="line">    images_placeholder: images_feed,</div><div class="line">    labels_placeholder: labels_feed,</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="2-检查训练状态"><a href="#2-检查训练状态" class="headerlink" title="(2).检查训练状态"></a>(2).检查训练状态</h4><p>see.run 在每一步训练之后都会取得两个值，loss 和train_op，（train_op不返回任何值，discard）<br>，所以会得到每一步的loss<br>每训练100次，check一下，输出loss<br>每训练1000次，进行evaluation，将生成的model保存一下</p>
+<h4 id="3-do-eval"><a href="#3-do-eval" class="headerlink" title="(3).do_eval"></a>(3).do_eval</h4><p>计算整个epoch的精度<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">true_count = 0  # Counts the number of correct predictions.</div><div class="line">steps_per_epoch = data_set.num_examples // FLAGS.batch_size</div><div class="line">num_examples = steps_per_epoch * FLAGS.batch_size</div><div class="line">for step in xrange(steps_per_epoch):</div><div class="line">  feed_dict = fill_feed_dict(data_set,</div><div class="line">                             images_placeholder,</div><div class="line">                             labels_placeholder)</div><div class="line">  true_count += sess.run(eval_correct, feed_dict=feed_dict)</div><div class="line">precision = float(true_count) / num_examples</div><div class="line">print(&apos;  Num examples: %d  Num correct: %d  Precision @ 1: %0.04f&apos; %</div><div class="line">      (num_examples, true_count, precision))</div></pre></td></tr></table></figure></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="建图步骤"><a href="#建图步骤" class="headerlink" title="建图步骤"></a>建图步骤</h3><ul>
+<li>Generate placeholders for the images and labels.</li>
+<li>Build a Graph that computes predictions from the inference model.</li>
+<li>Add to the Graph the Ops for loss calculation.</li>
+<li>Add to the Graph the Ops that calculate and apply gradients.</li>
+<li>Add the Op to compare the logits to the labels during evaluation.</li>
+<li>Build the summary Tensor based on the TF collection of Summaries.</li>
+<li>Add the variable initializer Op.</li>
+<li>Create a saver for writing training checkpoints.</li>
+<li>Create a session for running Ops on the Graph.</li>
+<li>Instantiate a SummaryWriter to output summaries and the Graph.</li>
+<li>And then after everything is built:Run the Op to initialize the variables.<br>Start the training loop.</li>
+</ul>
+<h3 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def run_training():</div><div class="line">  &quot;&quot;&quot;Train MNIST for a number of steps.&quot;&quot;&quot;</div><div class="line">  # Get the sets of images and labels for training, validation, and</div><div class="line">  # test on MNIST.</div><div class="line">  data_sets = input_data.read_data_sets(FLAGS.input_data_dir, FLAGS.fake_data)</div></pre></td></tr></table></figure>
+<h3 id="开始建图"><a href="#开始建图" class="headerlink" title="开始建图"></a>开始建图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"># Tell TensorFlow that the model will be built into the default Graph.</div><div class="line">with tf.Graph().as_default():</div><div class="line">  # Generate placeholders for the images and labels.</div><div class="line">  images_placeholder, labels_placeholder = placeholder_inputs(</div><div class="line">      FLAGS.batch_size)</div><div class="line"></div><div class="line">  # Build a Graph that computes predictions from the inference model.</div><div class="line">  logits = mnist.inference(images_placeholder,</div><div class="line">                           FLAGS.hidden1,</div><div class="line">                           FLAGS.hidden2)</div><div class="line"></div><div class="line">  # Add to the Graph the Ops for loss calculation.</div><div class="line">  loss = mnist.loss(logits, labels_placeholder)</div><div class="line"></div><div class="line">  # Add to the Graph the Ops that calculate and apply gradients.</div><div class="line">  train_op = mnist.training(loss, FLAGS.learning_rate)</div><div class="line"></div><div class="line">  # Add the Op to compare the logits to the labels during evaluation.</div><div class="line">  eval_correct = mnist.evaluation(logits, labels_placeholder)</div><div class="line"></div><div class="line">  # Build the summary Tensor based on the TF collection of Summaries.</div><div class="line">  summary = tf.summary.merge_all()</div><div class="line"></div><div class="line">  # Add the variable initializer Op.</div><div class="line">  init = tf.global_variables_initializer()</div><div class="line"></div><div class="line">  # Create a saver for writing training checkpoints.</div><div class="line">  saver = tf.train.Saver()</div><div class="line"></div><div class="line">  # Create a session for running Ops on the Graph.</div><div class="line">  sess = tf.Session()</div><div class="line"></div><div class="line">  # Instantiate a SummaryWriter to output summaries and the Graph.</div><div class="line">  summary_writer = tf.summary.FileWriter(FLAGS.log_dir, sess.graph)</div><div class="line"></div><div class="line">  # And then after everything is built:</div><div class="line"></div><div class="line">  # Run the Op to initialize the variables.</div><div class="line">  sess.run(init)</div></pre></td></tr></table></figure>
+<p>###开始循环训练<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"># Start the training loop.</div><div class="line">for step in xrange(FLAGS.max_steps):</div><div class="line">  start_time = time.time()</div><div class="line"></div><div class="line">  # Fill a feed dictionary with the actual set of images and labels</div><div class="line">  # for this particular training step.</div><div class="line">  feed_dict = fill_feed_dict(data_sets.train,</div><div class="line">                             images_placeholder,</div><div class="line">                             labels_placeholder)</div><div class="line"></div><div class="line">  # Run one step of the model.  The return values are the activations</div><div class="line">  # from the `train_op` (which is discarded) and the `loss` Op.  To</div><div class="line">  # inspect the values of your Ops or variables, you may include them</div><div class="line">  # in the list passed to sess.run() and the value tensors will be</div><div class="line">  # returned in the tuple from the call.</div><div class="line">  _, loss_value = sess.run([train_op, loss],</div><div class="line">                           feed_dict=feed_dict)</div><div class="line"></div><div class="line">  duration = time.time() - start_time</div><div class="line"></div><div class="line">  # Write the summaries and print an overview fairly often.</div><div class="line">  if step % 100 == 0:</div><div class="line">    # Print status to stdout.</div><div class="line">    print(&apos;Step %d: loss = %.2f (%.3f sec)&apos; % (step, loss_value, duration))</div><div class="line">    # Update the events file.</div><div class="line">    summary_str = sess.run(summary, feed_dict=feed_dict)</div><div class="line">    summary_writer.add_summary(summary_str, step)</div><div class="line">    summary_writer.flush()</div><div class="line"></div><div class="line">  # Save a checkpoint and evaluate the model periodically.</div><div class="line">  if (step + 1) % 1000 == 0 or (step + 1) == FLAGS.max_steps:</div><div class="line">    checkpoint_file = os.path.join(FLAGS.log_dir, &apos;model.ckpt&apos;)</div><div class="line">    saver.save(sess, checkpoint_file, global_step=step)</div><div class="line">    # Evaluate against the training set.</div><div class="line">    print(&apos;Training Data Eval:&apos;)</div><div class="line">    do_eval(sess,</div><div class="line">            eval_correct,</div><div class="line">            images_placeholder,</div><div class="line">            labels_placeholder,</div><div class="line">            data_sets.train)</div><div class="line">    # Evaluate against the validation set.</div><div class="line">    print(&apos;Validation Data Eval:&apos;)</div><div class="line">    do_eval(sess,</div><div class="line">            eval_correct,</div><div class="line">            images_placeholder,</div><div class="line">            labels_placeholder,</div><div class="line">            data_sets.validation)</div><div class="line">    # Evaluate against the test set.</div><div class="line">    print(&apos;Test Data Eval:&apos;)</div><div class="line">    do_eval(sess,</div><div class="line">            eval_correct,</div><div class="line">            images_placeholder,</div><div class="line">            labels_placeholder,</div><div class="line">            data_sets.test)</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/" data-id="cj8er59m2000i8ooijnq9vczg" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/06/LRCN(1)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">tensorflow(4)在tf.estimator中建立input函数</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/tensorflow学习/" style="font-size: 10px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 10px;">操作</a> <a href="/tags/文章复现/" style="font-size: 10px;">文章复现</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/06/LRCN(1)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/">tensorflow(2)Tensor Flow Mechanics101</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/">tensorflow(4)在tf.estimator中建立input函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(3)  tfestimator/">tensorflow(3)tf.estimator</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/python(4) list生成式/">python(4) list生成式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

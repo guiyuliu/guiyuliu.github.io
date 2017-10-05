@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python(3) 切片，迭代 | 刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.切片能从list、tuple、字符串中取出指定位置的一串元素元组是另一种list，只不过不能改变，字符串同理 从list中取出指定位置的元素很像matlab[a:b:c]">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python(3) 切片，迭代">
+<meta property="og:url" content="http://yoursite.com/2017/10/06/python(3) 切片迭代/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="1.切片能从list、tuple、字符串中取出指定位置的一串元素元组是另一种list，只不过不能改变，字符串同理 从list中取出指定位置的元素很像matlab[a:b:c]">
+<meta property="og:updated_time" content="2017-10-05T17:44:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python(3) 切片，迭代">
+<meta name="twitter:description" content="1.切片能从list、tuple、字符串中取出指定位置的一串元素元组是另一种list，只不过不能改变，字符串同理 从list中取出指定位置的元素很像matlab[a:b:c]">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python(3) 切片迭代" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/06/python(3) 切片迭代/" class="article-date">
+  <time datetime="2017-10-05T17:44:25.000Z" itemprop="datePublished">2017-10-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python(3) 切片，迭代
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-切片"><a href="#1-切片" class="headerlink" title="1.切片"></a>1.切片</h2><p>能从list、tuple、字符串中取出指定位置的一串元素<br>元组是另一种list，只不过不能改变，字符串同理</p>
+<p>从list中取出指定位置的元素很像matlab<br><code>[a:b:c]</code><br><a id="more"></a><br>a:起始序号 （第一位是0）<br>b:结束序号（不包括）<br>c:步长<br>也可以由负数开始取<br>起始序号或结束序号是最后一个，可以省略不写。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">L = [&apos;Michael&apos;, &apos;Sarah&apos;, &apos;Tracy&apos;, &apos;Bob&apos;, &apos;Jack&apos;]</div><div class="line"></div><div class="line">print(&apos;L[0:3] =&apos;, L[0:3])  </div><div class="line">print(&apos;L[:3] =&apos;, L[:3])  从序号为0的第一个元素开始</div><div class="line">print(&apos;L[1:3] =&apos;, L[1:3])  </div><div class="line">print(&apos;L[-2:] =&apos;, L[-2:])  倒数第二个，包含倒数第一个</div></pre></td></tr></table></figure></p>
+<p>结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">lgy@lgy:~/download/python$ python slice.py </div><div class="line">(&apos;L[0:3] =&apos;, [&apos;Michael&apos;, &apos;Sarah&apos;, &apos;Tracy&apos;])</div><div class="line">(&apos;L[:3] =&apos;, [&apos;Michael&apos;, &apos;Sarah&apos;, &apos;Tracy&apos;])</div><div class="line">(&apos;L[1:3] =&apos;, [&apos;Sarah&apos;, &apos;Tracy&apos;])</div><div class="line">(&apos;L[-2:] =&apos;, [&apos;Bob&apos;, &apos;Jack&apos;])</div></pre></td></tr></table></figure></p>
+<p>从tuple元组中取出一个切片，同理,操作的结果仍是tuple<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; (1,2,3,4,5)[:3]</div><div class="line">(1, 2, 3)</div></pre></td></tr></table></figure></p>
+<p>从字符串中取一个切片，仍是字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; &apos;ABCDEFG&apos;[:3]</div><div class="line">&apos;ABC&apos;</div><div class="line">&gt;&gt;&gt; &apos;ABCDEFG&apos;[::2]</div><div class="line">&apos;ACEG&apos;</div></pre></td></tr></table></figure></p>
+<h2 id="２．迭代"><a href="#２．迭代" class="headerlink" title="２．迭代"></a>２．迭代</h2><p>用for循环来遍历一个list或者touple，这种循环我们称为迭代</p>
+<h3 id="1-list-迭代"><a href="#1-list-迭代" class="headerlink" title="(1).list 迭代"></a>(1).list 迭代</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">d=[&apos;a&apos;,&apos;b&apos;,&apos;c&apos;]</div><div class="line">for i in d:</div><div class="line">	print i</div></pre></td></tr></table></figure>
+<p>输出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a</div><div class="line">b</div><div class="line">c</div></pre></td></tr></table></figure></p>
+<p>如果要给list加上下标索引，可以用<code>enumerate</code>函数将list变成索引-元素对，进行两个元素的迭代<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"> for i, value in enumerate([&apos;A&apos;, &apos;B&apos;, &apos;C&apos;]):</div><div class="line">    print i, value</div><div class="line">#输出</div><div class="line">0 A</div><div class="line">1 B</div><div class="line">2 C</div></pre></td></tr></table></figure></p>
+<h3 id="2-字典-迭代"><a href="#2-字典-迭代" class="headerlink" title="(2).字典 迭代"></a>(2).字典 迭代</h3><p>假设现在有一个字典d<br>迭代取出字典中的键值，直接在d中取<br><code>for key in d:</code><br>迭代取出字典中的value，for value in d.itervalue()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">for value in d.itervalues():</div><div class="line">	print value</div><div class="line"># output ，no order</div><div class="line">1</div><div class="line">3</div><div class="line">2</div></pre></td></tr></table></figure></p>
+<p>同时取出key-value,两个变量的迭代 for k，v in d.iteritems()</p>
+<h3 id="3-字符串迭代"><a href="#3-字符串迭代" class="headerlink" title="(3).字符串迭代"></a>(3).字符串迭代</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">for ch in &apos;ABC&apos;:</div><div class="line">...     print ch</div><div class="line">...</div><div class="line">A</div><div class="line">B</div><div class="line">C</div></pre></td></tr></table></figure>
+<h3 id="4-判断一个对象是否能迭代"><a href="#4-判断一个对象是否能迭代" class="headerlink" title="(4).判断一个对象是否能迭代"></a>(4).判断一个对象是否能迭代</h3><p>用Iterable这个方法，<code>from collections import Iterable</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from collections import Iterable</div><div class="line">&gt;&gt;&gt; isinstance(&apos;abc&apos;, Iterable) # str是否可迭代</div><div class="line">True</div><div class="line">&gt;&gt;&gt; isinstance([1,2,3], Iterable) # list是否可迭代</div><div class="line">True</div><div class="line">&gt;&gt;&gt; isinstance(123, Iterable) # 整数是否可迭代</div><div class="line">False</div></pre></td></tr></table></figure></p>
+<h3 id="5-两个变量的迭代"><a href="#5-两个变量的迭代" class="headerlink" title="(5). 两个变量的迭代"></a>(5). 两个变量的迭代</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">for x, y in [(1, 1), (2, 4), (3, 9)]:</div><div class="line">...     print x, y</div><div class="line">...</div><div class="line">1 1</div><div class="line">2 4</div><div class="line">3 9</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/06/python(3) 切片迭代/" data-id="cj8er59ln00058ooik3fg2v5t" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/06/python1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          python(1) python基础知识
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/06/C++(7) 函数重载-operator/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">C++(7) 函数重载／operator</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/tensorflow学习/" style="font-size: 10px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 10px;">操作</a> <a href="/tags/文章复现/" style="font-size: 10px;">文章复现</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/06/LRCN(1)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/">tensorflow(2)Tensor Flow Mechanics101</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/">tensorflow(4)在tf.estimator中建立input函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(3)  tfestimator/">tensorflow(3)tf.estimator</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/python(4) list生成式/">python(4) list生成式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

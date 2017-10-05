@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="title: LRCN(1)tag: 代码复现 这篇文章描述了如何复现《Long-term Recurrent Convolutional Networks for Visual Recognition and Description》这篇paper的动作识别的实验部分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="刘丢丢の日常">
+<meta property="og:url" content="http://yoursite.com/2017/10/06/LRCN(1)/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="title: LRCN(1)tag: 代码复现 这篇文章描述了如何复现《Long-term Recurrent Convolutional Networks for Visual Recognition and Description》这篇paper的动作识别的实验部分">
+<meta property="og:updated_time" content="2017-10-05T17:44:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="刘丢丢の日常">
+<meta name="twitter:description" content="title: LRCN(1)tag: 代码复现 这篇文章描述了如何复现《Long-term Recurrent Convolutional Networks for Visual Recognition and Description》这篇paper的动作识别的实验部分">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-LRCN(1)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/06/LRCN(1)/" class="article-date">
+  <time datetime="2017-10-05T17:44:25.000Z" itemprop="datePublished">2017-10-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>title: LRCN(1)<br>tag: 代码复现</p>
+<p>这篇文章描述了如何复现《Long-term Recurrent Convolutional Networks for Visual Recognition and Description》这篇paper的动作识别的实验部分<br><a id="more"></a><br>这里是复现代码的指导<a href="https://people.eecs.berkeley.edu/~lisa_anne/LRCN_video]" target="_blank" rel="external">原文链接</a><br>当然，重新复现别人的代码总会遇到各种各样的问题。我把他的代码使用过程翻译一遍，然后按照自己的复现过程整理各种各样的问题，供大家参考。</p>
+<h2 id="一、我的使用过程"><a href="#一、我的使用过程" class="headerlink" title="一、我的使用过程"></a>一、我的使用过程</h2><h3 id="１、从github上克隆整个仓库"><a href="#１、从github上克隆整个仓库" class="headerlink" title="１、从github上克隆整个仓库"></a>１、从github上克隆整个仓库</h3><p>打开命令行，输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/LisaAnne/lisa-caffe-public.git</div></pre></td></tr></table></figure></p>
+<p>克隆完之后你会发现这个仓库跟caffe的文件夹结构一样，没错，这就是caffe,只不过是作者升级过的caffe,你会发现在example这个文件夹里多出了两个例子/LRCN_activity_recognition和LRCN_evaluate。当然还做了一些其他的修改，这就不细说了。所有关于action recognition的代码都在examples/LRCN_activity_recognition这个文件夹中。</p>
+<h3 id="２、重新编译caffe"><a href="#２、重新编译caffe" class="headerlink" title="２、重新编译caffe"></a>２、重新编译caffe</h3><p>我想大家已经编译过无数次caffe了，如果你已经安装过官网给的caffe，不用管它，这里还是要重新编译一遍。在重新编译之前，需要修改你的环境变量，即在~/.bashrc中把之前的PYTHON_PATH给注释掉，换成现在的这个文件夹路径<br>sudo gedit ~/.bashrc<br>比如我安装官网的caffe时加入了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">＃　export PYTHONPATH=/home/lgy/software/caffe/python:$PYTHONPATH</div></pre></td></tr></table></figure>
+<p>现在我把它注释掉（前面加＃号），并换成这个caffe仓库的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PYTHONPATH=/home/lgy/workspace/lisa-caffe-public/python:$PYTHONPATH</div></pre></td></tr></table></figure>
+<p>然后就可以开始编译这个仓库了，关于Makefile.config怎么修改，就按照你之前怎么修改的做好了,不过它好像不支持cudnn.我就没有注释cudnn。还有作者说的要保证设置WITH_PYTHON_LAYER := 1<br>编译的过程就是在根目录下运行以下四行代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">make all -j4</div><div class="line">make test</div><div class="line">make runtest</div><div class="line">make pycaffe</div></pre></td></tr></table></figure>
+<p>编译成功啦！</p>
+<h3 id="３、提取RGB-frame"><a href="#３、提取RGB-frame" class="headerlink" title="３、提取RGB frame"></a>３、提取RGB frame</h3><p>顾名思义，就是把视频变成一帧帧的图片。进入直接运行extract_frames.sh，在该脚本文件中修改要提取的视频的路径，参数是frames/s</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /home/lgy/workspace/lisa-caffe-public/examples/LRCN_activity_recognition</div><div class="line">./extract_frames.sh video.avi 30/1</div></pre></td></tr></table></figure>
+<h3 id="４、提取光流"><a href="#４、提取光流" class="headerlink" title="４、提取光流"></a>４、提取光流</h3><p>如果你在提取光流的过程中出现关于mex_OF的什么错误，不要着急，你还需要下载一个[]<a href="https://lmb.informatik.uni-freiburg.de/resources/software.php" target="_blank" rel="external">代码</a>。<br>在该页面中找到High accuracy optical flow estimation based on a theory for warping这篇文章的Download Matlab Mex-functions for 64-bit Linux, 32-bit and 64-bit Windows，下载之．<br>所需文件 create_flow_images_LRCN.m、把这里面的两个函数分开来存放，要不然找不到下面的一个函数 </p>
+<h3 id="５、下载模型"><a href="#５、下载模型" class="headerlink" title="５、下载模型"></a>５、下载模型</h3><p>有四个个模型，single frame model的两个(RGB和flow)和LRCN model的两个，这里是作者训练好的模型。<a href="https://people.eecs.berkeley.edu/~lisa_anne/LRCN_video_weights.html" target="_blank" rel="external">模型链接</a>把这四个模型都下载下来。模型还蛮大的呢，每个都有200多Ｍ。<br>如果你想自己重新训练的话，按照作者说的。single frame model是在这个模型上finetune的，LRCN model是用single frame model训练的。具体的过程我还没试过。</p>
+<h3 id="６、运行demo"><a href="#６、运行demo" class="headerlink" title="６、运行demo"></a>６、运行demo</h3><p>下载好的模型直接放在LRCN_activity_recognition这个文件夹里<br>frames和flow_images分别存放图片和光流图片，按照代码，这两个下属文件夹下面应该还设置小的文件夹，文件夹名称即为你要测试的video的名称</p>
+<h2 id="二、作者原文"><a href="#二、作者原文" class="headerlink" title="二、作者原文"></a>二、作者原文</h2><h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><p> All code to train the activity recognition models is on the “lstm_video_deploy” branch of Lisa Anne Hendricks’s Caffe fork. All code needed to replicate experiments can be found in “examples/LRCN_activity_recognition”.<br>所有用来训练动作识别模型的代码在这个仓库<a href="https://github.com/LisaAnne/lisa-caffe-public" target="_blank" rel="external">lisa-caffe-public</a>的lstm_video_deploy这个分支上.<br>用来复现实验的代码在examples/LRCN_activity_recognition这个文件夹中。</p>
+<h3 id="Data"><a href="#Data" class="headerlink" title="Data:"></a>Data:</h3><p> The model was trained on the UCF-101 dataset . Flow was computed using [1].<br>该模型是在UCF-101这个数据集上训练的</p>
+<p>###Models:<br> Single frame and LRCN models can be found here.<br>模型链接</p>
+<p><strong>NOTE</strong><br>Some people have had difficulty reproducing my results by extracting their own frames. I am almost positive the issue is in the ``extract_frames.sh’’ script, but have not had time to track it down yet. You can find the RGB and flow frames I extracted here.<br>如果在提取视频帧和光流上有困难，你可以从这里下载我提取好的ＲＧＢ和光流帧</p>
+<p>Steps to retrain the LRCN activity recognition models: </p>
+<ol>
+<li>Extract RGB frames: The script “extract_frames.sh” will convert UCF-101 .avi files to .jpg images. I extracted frames at 30 frames/second. </li>
+<li>Compute flow frames: After downloading the code from [1], you can use “create_flow_images_LRCN.m” to compute flow frames. Example flow images for the video “YoYo_g25_c03” are here. </li>
+<li>Train single frame models: Finetune the hybrid model (found here) with video frames to train a single frame model. Use “run_singleFrame_RGB.sh” and “run_singleFrame_flow.sh” to train the RGB and flow models respectively. Make sure to change the “root_folder” param in “train_test_singleFrame_RGB.prototxt” and “train_test_singleFrame_flow.prototxt” as needed. The single frame models I trained can be found here.<br>　　训练单帧模型，用这连个脚本分别训练RGB和光流的模型。确保修改train_test_singleFrame_RGB.prototxt和train_test_singleFrame_flow.prototxt中根目录的路径。</li>
+<li>Train LRCN models: Using the single frame models as a starting point, train the LRCN models by running “run_lstm_RGB.sh” and “run_lstm_flow.sh”. The data layer for the LRCN model is a python layer (“sequence_input_layer.py”). Make sure to set “WITH_PYTHON_LAYER := 1” in Makefile.config. Change the paths “flow_frames” and “RGB_frames” in “sequence_input_layer.py” as needed. The models I trained can be found here.<br>　　训练LRCNmodel 用单帧模型作为起点，通过运行”run_lstm_RGB.sh” “run_lstm_flow.sh”这两个脚本来训练LRCN模型<br>　　LRCN模型的数据层是python层，”sequence_input_layer.py”。保证编译caffe时设置WITH_PYTHON_LAYER := 1。修改sequence_input_layer.py脚本中 “flow_frames” 和 “RGB_frames”的路径。</li>
+<li>Evaluate the models: “classify.py” shows how to classify a video using the single frame and LRCN models. Make sure to adjust the pathnames “RGB_video_path” and “flow_video_path” as needed. You can also evaluate the LSTM model by running code found in “LRCN_evaluate” (added 1/12/16).<br>　　评估模型：classify.py展示了如何用single frame model和LRCN model分类一个video。如果需要的话，修改其中”RGB_video_path” 和 “flow_video_path”的路径。<br>用LRCN_evaluate中的内容来评估LSTM模型</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/06/LRCN(1)/" data-id="cj8er59lh00018ooimk9f7fgt" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">tensorflow(2)Tensor Flow Mechanics101</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/tensorflow学习/" style="font-size: 10px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 10px;">操作</a> <a href="/tags/文章复现/" style="font-size: 10px;">文章复现</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/06/LRCN(1)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/">tensorflow(2)Tensor Flow Mechanics101</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/">tensorflow(4)在tf.estimator中建立input函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(3)  tfestimator/">tensorflow(3)tf.estimator</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/python(4) list生成式/">python(4) list生成式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

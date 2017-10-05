@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>博客修改 | 刘丢丢の日常</title>
+  <title>C3D(1)代码使用 | 刘丢丢の日常</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.修改分享按钮参考">
-<meta name="keywords" content="操作">
+  <meta name="description" content="1.必须安装以下两个python库tensorflow和pillow 2、下载UCF101库3、将视频转换成图片 参数是5fps./list/convert_video_to_images.sh .../UCF101 5这个脚本文件里面其实主要是用ffmpeg抽取frame 4、将image转换成list在命令行输入./convert_images_to_list.sh path/to/vide">
+<meta name="keywords" content="文章复现">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客修改">
-<meta property="og:url" content="http://yoursite.com/2017/07/15/博客修改/index.html">
+<meta property="og:title" content="C3D(1)代码使用">
+<meta property="og:url" content="http://yoursite.com/2017/08/20/C3D(1)/index.html">
 <meta property="og:site_name" content="刘丢丢の日常">
-<meta property="og:description" content="1.修改分享按钮参考">
-<meta property="og:updated_time" content="2017-07-14T16:43:23.000Z">
+<meta property="og:description" content="1.必须安装以下两个python库tensorflow和pillow 2、下载UCF101库3、将视频转换成图片 参数是5fps./list/convert_video_to_images.sh .../UCF101 5这个脚本文件里面其实主要是用ffmpeg抽取frame 4、将image转换成list在命令行输入./convert_images_to_list.sh path/to/vide">
+<meta property="og:updated_time" content="2017-08-20T10:42:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="博客修改">
-<meta name="twitter:description" content="1.修改分享按钮参考">
+<meta name="twitter:title" content="C3D(1)代码使用">
+<meta name="twitter:description" content="1.必须安装以下两个python库tensorflow和pillow 2、下载UCF101库3、将视频转换成图片 参数是5fps./list/convert_video_to_images.sh .../UCF101 5这个脚本文件里面其实主要是用ffmpeg抽取frame 4、将image转换成list在命令行输入./convert_images_to_list.sh path/to/vide">
   
     <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
   
@@ -68,10 +68,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-博客修改" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-C3D(1)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/07/15/博客修改/" class="article-date">
-  <time datetime="2017-07-14T16:43:23.000Z" itemprop="datePublished">2017-07-15</time>
+    <a href="/2017/08/20/C3D(1)/" class="article-date">
+  <time datetime="2017-08-20T08:59:17.000Z" itemprop="datePublished">2017-08-20</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      博客修改
+      C3D(1)代码使用
     </h1>
   
 
@@ -90,15 +90,24 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="1-修改分享按钮"><a href="#1-修改分享按钮" class="headerlink" title="1.修改分享按钮"></a>1.修改分享按钮</h3><p><a href="https://blanboom.org/2015/hack-hexo-theme-landscape/" target="_blank" rel="external">参考</a></p>
+        <a id="more"></a>
+<h2 id="1-必须安装以下两个python库"><a href="#1-必须安装以下两个python库" class="headerlink" title="1.必须安装以下两个python库"></a>1.必须安装以下两个python库</h2><p>tensorflow和pillow</p>
+<h2 id="2、下载UCF101库"><a href="#2、下载UCF101库" class="headerlink" title="2、下载UCF101库"></a>2、下载UCF101库</h2><h2 id="3、将视频转换成图片-参数是5fps"><a href="#3、将视频转换成图片-参数是5fps" class="headerlink" title="3、将视频转换成图片 参数是5fps"></a>3、将视频转换成图片 参数是5fps</h2><p><code>./list/convert_video_to_images.sh .../UCF101 5</code><br>这个脚本文件里面其实主要是用ffmpeg抽取frame</p>
+<h2 id="4、将image转换成list"><a href="#4、将image转换成list" class="headerlink" title="4、将image转换成list"></a>4、将image转换成list</h2><p>在命令行输入<code>./convert_images_to_list.sh path/to/video 4</code></p>
+<p>脚本中<code>if (( $(jot -r 1 1 $2)  &gt; 1 ));</code> 这个条件是什么意思<br>thenecho “$imagesFolder” $COUNT &gt;&gt; train.list</p>
+<p>$1表示命令行第一个参数</p>
+<h2 id="5、训练和测试"><a href="#5、训练和测试" class="headerlink" title="5、训练和测试"></a>5、训练和测试</h2><ol>
+<li><code>python train_c3d_ucf101.py</code> will train C3D model. The trained model will saved in <code>models</code> directory.</li>
+<li><code>python predict_c3d_ucf101.py</code> will test C3D model on a validation data set.</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/07/15/博客修改/" data-id="cj543rnc90005h5oii0xhq6fz" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/08/20/C3D(1)/" data-id="cj6kllk230000k0oi4xny2cjh" class="article-share-link">Partager</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作/">操作</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
 
     </footer>
   </div>
@@ -106,19 +115,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/08/20/C3D(1)/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/08/20/C3D(2)/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Récent</strong>
       <div class="article-nav-title">
         
-          C3D(1)代码使用
+          C3D(2)训练 train_c3d_ucf101.py代码详解
         
       </div>
     </a>
   
   
-    <a href="/2017/07/15/事件检测-paper/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/07/15/博客修改/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Ancien</strong>
-      <div class="article-nav-title">用少量训练数据实现单张图片的事件检测</div>
+      <div class="article-nav-title">博客修改</div>
     </a>
   
 </nav>

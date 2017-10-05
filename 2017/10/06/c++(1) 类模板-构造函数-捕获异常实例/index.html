@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>c++(1) 类模板/构造函数/捕获异常 实例 | 刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在一个头文件里，一般上面写模板类的声明，下面写模板类的定义">
+<meta name="keywords" content="cpp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++(1) 类模板&#x2F;构造函数&#x2F;捕获异常 实例">
+<meta property="og:url" content="http://yoursite.com/2017/10/06/c++(1) 类模板-构造函数-捕获异常实例/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="在一个头文件里，一般上面写模板类的声明，下面写模板类的定义">
+<meta property="og:updated_time" content="2017-10-05T17:44:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++(1) 类模板&#x2F;构造函数&#x2F;捕获异常 实例">
+<meta name="twitter:description" content="在一个头文件里，一般上面写模板类的声明，下面写模板类的定义">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-c++(1) 类模板-构造函数-捕获异常实例" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/06/c++(1) 类模板-构造函数-捕获异常实例/" class="article-date">
+  <time datetime="2017-10-05T17:44:25.000Z" itemprop="datePublished">2017-10-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      c++(1) 类模板/构造函数/捕获异常 实例
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在一个头文件里，一般上面写模板类的声明，下面写模板类的定义<br><a id="more"></a></p>
+<h2 id="一、类模板"><a href="#一、类模板" class="headerlink" title="一、类模板"></a>一、类模板</h2><h3 id="1-模板类的声明"><a href="#1-模板类的声明" class="headerlink" title="1.模板类的声明"></a>1.模板类的声明</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">template&lt;typename TDatums,   </div><div class="line">        typename TWorker = std::shared_ptr&lt;Worker&lt;std::shared_ptr&lt;TDatums&gt;&gt;&gt;,</div><div class="line">        typename TQueue = Queue&lt;std::shared_ptr&lt;TDatums&gt;&gt;&gt;</div><div class="line">  class Wrapper</div></pre></td></tr></table></figure>
+<h3 id="2-模板类的使用"><a href="#2-模板类的使用" class="headerlink" title="2.模板类的使用"></a>2.模板类的使用</h3><p>这里有三种形式参数，调用的时候传入任何一种参数即可。创建了一个类的对象，opWapper。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">op::Wrapper&lt;std::vector&lt;op::Datum&gt;&gt; opWrapper;</div></pre></td></tr></table></figure></p>
+<p><code>std::vector&lt;op::Datum&gt;</code>应该属于第一种形参</p>
+<h3 id="3-模板函数的定义"><a href="#3-模板函数的定义" class="headerlink" title="3.模板函数的定义"></a>3.模板函数的定义</h3><p>代码中有一行调用了configue这个函数。<br>configure为名定义的同名函数就有四个，这四个所传入的参数个数，类型不同，因此可以重名。<br><code>opWrapper.configure(wrapperStructPose, wrapperStructFace, wrapperStructHand, wrapperStructInput, wrapperStructOutput);</code></p>
+<h2 id="二、构造函数"><a href="#二、构造函数" class="headerlink" title="二、构造函数"></a>二、构造函数</h2><h3 id="1-声明"><a href="#1-声明" class="headerlink" title="1.声明"></a>1.声明</h3><p><code>explicit Wrapper(const ThreadManagerMode threadManagerMode = ThreadManagerMode::Synchronous);</code></p>
+<h3 id="2-定义"><a href="#2-定义" class="headerlink" title="2.定义"></a>2.定义</h3><p>构造函数用冒号初始化一些变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">template&lt;typename TDatums, typename TWorker, typename TQueue&gt;</div><div class="line">Wrapper&lt;TDatums, TWorker, TQueue&gt;::Wrapper(const ThreadManagerMode threadManagerMode) :</div><div class="line">    mThreadManagerMode&#123;threadManagerMode&#125;,</div><div class="line">    spVideoSeek&#123;std::make_shared&lt;std::pair&lt;std::atomic&lt;bool&gt;, std::atomic&lt;int&gt;&gt;&gt;()&#125;,</div><div class="line">    mThreadManager&#123;threadManagerMode&#125;,</div><div class="line">    mMultiThreadEnabled&#123;true&#125;</div><div class="line">&#123;</div><div class="line">    try</div><div class="line">    &#123;</div><div class="line">        // It cannot be directly included in the constructor, otherwise compiler error for copying std::atomic</div><div class="line">        spVideoSeek-&gt;first = false;</div><div class="line">        spVideoSeek-&gt;second = 0;</div><div class="line">    &#125;</div><div class="line">    catch (const std::exception&amp; e)</div><div class="line">    &#123;</div><div class="line">        error(e.what(), __LINE__, __FUNCTION__, __FILE__);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="3-析构函数"><a href="#3-析构函数" class="headerlink" title="3.析构函数"></a>3.析构函数</h3><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">template&lt;typename TDatums, typename TWorker, typename TQueue&gt;</div><div class="line">Wrapper&lt;TDatums, TWorker, TQueue&gt;::~Wrapper()</div><div class="line">&#123;函数体&#125;</div></pre></td></tr></table></figure>
+<h3 id="一般的函数定义"><a href="#一般的函数定义" class="headerlink" title="一般的函数定义"></a>一般的函数定义</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">template&lt;typename TDatums, typename TWorker, typename TQueue&gt;</div><div class="line">void Wrapper&lt;TDatums, TWorker, TQueue&gt;::disableMultiThreading()</div><div class="line">&#123;函数体&#125;</div></pre></td></tr></table></figure>
+<p>在类模板中，所以函数定义的时候都要加上<br><code>template&lt;typename TDatums, typename TWorker, typename TQueue&gt;</code>　模板关键字<br>和<code>Wrapper&lt;TDatums, TWorker, TQueue&gt;::</code>　类名</p>
+<h2 id="三、捕获异常"><a href="#三、捕获异常" class="headerlink" title="三、捕获异常"></a>三、捕获异常</h2><p>try…catch 语句将能引发错误的代码放在try块中，并且对应一个响应，然后有异常被抛出。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">template&lt;typename TDatums, typename TWorker, typename TQueue&gt;</div><div class="line"> void Wrapper&lt;TDatums, TWorker, TQueue&gt;::configure(const WrapperStructPose&amp; wrapperStructPose,  const WrapperStructFace&amp; wrapperStructFace, const WrapperStructInput&amp; wrapperStructInput,const WrapperStructOutput&amp;wrapperStructOutput)</div><div class="line"> &#123;</div><div class="line">     try</div><div class="line">     &#123;</div><div class="line">         configure(wrapperStructPose, wrapperStructFace, WrapperStructHand&#123;&#125;,</div><div class="line">                   wrapperStructInput, wrapperStructOutput);</div><div class="line">     &#125;</div><div class="line">     catch (const std::exception&amp; e)</div><div class="line">     &#123;</div><div class="line">         error(e.what(), __LINE__, __FUNCTION__, __FILE__);</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>这个configure函数只有四个输入，但是我们看它函数体内部，其实还是指向有五个输入的那个函数，并写了一个捕获异常</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/06/c++(1) 类模板-构造函数-捕获异常实例/" data-id="cj8er59ll00038ooi9cgxzfof" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/06/python(2) 模块/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          python(2) 模块
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/20/C3D(2)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">C3D(2)训练 train_c3d_ucf101.py代码详解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/tensorflow学习/" style="font-size: 10px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 10px;">操作</a> <a href="/tags/文章复现/" style="font-size: 10px;">文章复现</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/06/LRCN(1)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/">tensorflow(2)Tensor Flow Mechanics101</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/">tensorflow(4)在tf.estimator中建立input函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(3)  tfestimator/">tensorflow(3)tf.estimator</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/python(4) list生成式/">python(4) list生成式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

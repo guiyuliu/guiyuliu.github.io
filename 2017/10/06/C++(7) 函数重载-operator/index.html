@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>博客修改 | 刘丢丢の日常</title>
+  <title>C++(7) 函数重载／operator | 刘丢丢の日常</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.修改分享按钮参考">
-<meta name="keywords" content="操作">
+  <meta name="description" content="（1） 函数重载函数的名字相同，但是参数不同。可能是参数的个数不同，也可能是参数的类型不同。">
+<meta name="keywords" content="cpp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客修改">
-<meta property="og:url" content="http://yoursite.com/2017/07/15/博客修改/index.html">
+<meta property="og:title" content="C++(7) 函数重载／operator">
+<meta property="og:url" content="http://yoursite.com/2017/10/06/C++(7) 函数重载-operator/index.html">
 <meta property="og:site_name" content="刘丢丢の日常">
-<meta property="og:description" content="1.修改分享按钮参考">
-<meta property="og:updated_time" content="2017-07-14T16:43:23.000Z">
+<meta property="og:description" content="（1） 函数重载函数的名字相同，但是参数不同。可能是参数的个数不同，也可能是参数的类型不同。">
+<meta property="og:updated_time" content="2017-10-05T17:44:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="博客修改">
-<meta name="twitter:description" content="1.修改分享按钮参考">
+<meta name="twitter:title" content="C++(7) 函数重载／operator">
+<meta name="twitter:description" content="（1） 函数重载函数的名字相同，但是参数不同。可能是参数的个数不同，也可能是参数的类型不同。">
   
     <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
   
@@ -68,10 +68,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-博客修改" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-C++(7) 函数重载-operator" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/07/15/博客修改/" class="article-date">
-  <time datetime="2017-07-14T16:43:23.000Z" itemprop="datePublished">2017-07-15</time>
+    <a href="/2017/10/06/C++(7) 函数重载-operator/" class="article-date">
+  <time datetime="2017-10-05T17:44:25.000Z" itemprop="datePublished">2017-10-06</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      博客修改
+      C++(7) 函数重载／operator
     </h1>
   
 
@@ -90,15 +90,26 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="1-修改分享按钮"><a href="#1-修改分享按钮" class="headerlink" title="1.修改分享按钮"></a>1.修改分享按钮</h3><p><a href="https://blanboom.org/2015/hack-hexo-theme-landscape/" target="_blank" rel="external">参考</a></p>
+        <h3 id="（1）-函数重载"><a href="#（1）-函数重载" class="headerlink" title="（1） 函数重载"></a>（1） 函数重载</h3><p>函数的名字相同，但是参数不同。可能是参数的个数不同，也可能是参数的类型不同。<br><a id="more"></a><br>以下例子，print就是重载函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">void print(int i) &#123;</div><div class="line">  cout &lt;&lt; &quot;Printing int: &quot; &lt;&lt; i &lt;&lt; endl;</div><div class="line">&#125;</div><div class="line">void print(double  f) &#123;</div><div class="line">  cout &lt;&lt; &quot;Printing float: &quot; &lt;&lt; f &lt;&lt; endl;</div><div class="line">&#125;</div><div class="line">void print(char* c) &#123;</div><div class="line">  cout &lt;&lt; &quot;Printing character: &quot; &lt;&lt; c &lt;&lt; endl;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="（2）运算符重载"><a href="#（2）运算符重载" class="headerlink" title="（2）运算符重载"></a>（2）运算符重载</h3><p><a href="http://blog.sina.com.cn/s/blog_4b3c1f950100kker.html" target="_blank" rel="external">参考博客</a><br>operator是C++的关键字，它和运算符一起使用，表示一个运算符函数，理解时应将<code>operator=</code>整体上视为一个函数名。</p>
+<p>在C++中，如果我们想比较两个整数，非常方便，用==就好了。但是如果我们要比较两个类对象，就不能直接用==了。要定义专门用于比较这两个类对象的<code>==</code>号<br>定义重载运算符函数的时候，可以定义成类成员函数，也可以全局函数。</p>
+<ul>
+<li>定义为类成员函数<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class person&#123;</div><div class="line">private:</div><div class="line">    int age;</div><div class="line">    public:</div><div class="line">    person(int a)&#123;</div><div class="line">       this-&gt;age=a;</div><div class="line">    &#125;</div><div class="line">   inline bool operator == (const person &amp;ps) const; //定义</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>实现方式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">inline bool person::operator==(const person &amp;ps) const</div><div class="line">&#123;</div><div class="line">     if (this-&gt;age==ps.age)</div><div class="line">        return true;</div><div class="line">     return false;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>调用方式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">int main()</div><div class="line">&#123;</div><div class="line">  person p1(10);</div><div class="line">  person p2(20);</div><div class="line">  if(p1==p2) cout&lt;&lt;”the age is equal!”&lt; return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>定义为全局函数</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/07/15/博客修改/" data-id="cj543rnc90005h5oii0xhq6fz" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/10/06/C++(7) 函数重载-operator/" data-id="cj8er59lc00008ooiq681g4i7" class="article-share-link">Partager</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作/">操作</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
 
     </footer>
   </div>
@@ -106,19 +117,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/08/20/C3D(1)/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/10/06/python(3) 切片迭代/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Récent</strong>
       <div class="article-nav-title">
         
-          C3D(1)代码使用
+          python(3) 切片，迭代
         
       </div>
     </a>
   
   
-    <a href="/2017/07/15/事件检测-paper/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/10/06/python(2) 模块/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Ancien</strong>
-      <div class="article-nav-title">用少量训练数据实现单张图片的事件检测</div>
+      <div class="article-nav-title">python(2) 模块</div>
     </a>
   
 </nav>

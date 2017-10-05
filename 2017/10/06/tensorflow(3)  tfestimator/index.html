@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>tensorflow(3)tf.estimator | 刘丢丢の日常</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="摘要:1234classifier = tf.estimator.DNNClassifier()train_input_fn = tf.estimator.inputs.numpy_input_fn()classifier.train(input_fn=train_input_fn, steps=2000)accuracy_score = classifier.evaluate(input_fn=">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tensorflow(3)tf.estimator">
+<meta property="og:url" content="http://yoursite.com/2017/10/06/tensorflow(3)  tfestimator/index.html">
+<meta property="og:site_name" content="刘丢丢の日常">
+<meta property="og:description" content="摘要:1234classifier = tf.estimator.DNNClassifier()train_input_fn = tf.estimator.inputs.numpy_input_fn()classifier.train(input_fn=train_input_fn, steps=2000)accuracy_score = classifier.evaluate(input_fn=">
+<meta property="og:updated_time" content="2017-10-05T17:44:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tensorflow(3)tf.estimator">
+<meta name="twitter:description" content="摘要:1234classifier = tf.estimator.DNNClassifier()train_input_fn = tf.estimator.inputs.numpy_input_fn()classifier.train(input_fn=train_input_fn, steps=2000)accuracy_score = classifier.evaluate(input_fn=">
+  
+    <link rel="alternate" href="/atom.xml" title="刘丢丢の日常" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘丢丢の日常</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">you know you love me</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tensorflow(3)  tfestimator" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/06/tensorflow(3)  tfestimator/" class="article-date">
+  <time datetime="2017-10-05T17:44:25.000Z" itemprop="datePublished">2017-10-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tensorflow(3)tf.estimator
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>摘要:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">classifier = tf.estimator.DNNClassifier()</div><div class="line">train_input_fn = tf.estimator.inputs.numpy_input_fn()</div><div class="line">classifier.train(input_fn=train_input_fn, steps=2000)</div><div class="line">accuracy_score = classifier.evaluate(input_fn=test_input_fn)[&quot;accuracy&quot;]</div></pre></td></tr></table></figure></p>
+<hr>
+<a id="more"></a>
+<p>tf.estimator 是tensorflow的一个高级的机器学习的API，使训练，evaluation 多种机器学习的模型更简单。<br>本文利用tf.estimator写一个深度神经网络分类器，分为以下几个步骤<br>1、数据预处理，讲CSV文件load进tensorflow Dataset<br>2、构建神经网络分类器<br>3、训练网络<br>4、evaluate<br>5、用写好的网络测试新的sample</p>
+<h3 id="一、数据预处理-load-csv-with-header"><a href="#一、数据预处理-load-csv-with-header" class="headerlink" title="一、数据预处理 load_csv_with_header()"></a>一、数据预处理 load_csv_with_header()</h3><p>该方法在learn.datasets.base里，需要三个参数</p>
+<ul>
+<li>1.文件名，csv文件的路径</li>
+<li>2.target_dtype,用numpy datatype来表示分类目标，在本例子中是花的种类0-2，是一个整数</li>
+<li>3.feature_dtype，用numpy datatype来表示特征的数据类型，在本例子中是花萼的长度，宽度等等，可用float32<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># Load datasets.</div><div class="line">training_set = tf.contrib.learn.datasets.base.load_csv_with_header(</div><div class="line">    filename=IRIS_TRAINING,</div><div class="line">    target_dtype=np.int,</div><div class="line">    features_dtype=np.float32)</div><div class="line">test_set = tf.contrib.learn.datasets.base.load_csv_with_header(</div><div class="line">    filename=IRIS_TEST,</div><div class="line">    target_dtype=np.int,</div><div class="line">    features_dtype=np.float32)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>load进来以后，dataset在tf.contrib.learn中是已命名的元组来存储的，访问方式<br><code>training_set.data</code> 存储的是特征<br><code>training_set.target</code> 存储的是target value<br>test_set同理</p>
+<h3 id="二、建立深度神经网络分类器"><a href="#二、建立深度神经网络分类器" class="headerlink" title="二、建立深度神经网络分类器"></a>二、建立深度神经网络分类器</h3><p>tf.estimator提供了一些预先定义好的模型，叫estimator,<br>比如可以直接用estimator来写一个DNN的网络，只需要把参数输进去，短短几行代码就能搞定</p>
+<ul>
+<li>1、确定feature的列数，<br>tf.feature_column.numeric_column这个函数就是用来创建有几个feature的，在本例子中有四个feature，shape为4</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># Specify that all features have real-value data</div><div class="line">feature_columns = [tf.feature_column.numeric_column(&quot;x&quot;, shape=[4])]</div><div class="line"></div><div class="line"># Build 3 layer DNN with 10, 20, 10 units respectively.</div><div class="line">classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,</div><div class="line">                                        hidden_units=[10, 20, 10],</div><div class="line">                                        n_classes=3,</div><div class="line">                                        model_dir=&quot;/tmp/iris_model&quot;)</div></pre></td></tr></table></figure>
+<ul>
+<li>2、建立DNN分类器<br>直接调用，输入参数进去<br>这样一个有三个隐藏层，unit个数分别是10,20,10的DNN分类器就建好了</li>
+</ul>
+<h3 id="训练输入"><a href="#训练输入" class="headerlink" title="训练输入"></a>训练输入</h3><p>数据在load进来之后，送入网络之前，还要经过input函数<br>tf.estimator API用input函数，作用是添加tf op来给模型提供输入数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Define the training inputs</div><div class="line">train_input_fn = tf.estimator.inputs.numpy_input_fn(</div><div class="line">    x=&#123;&quot;x&quot;: np.array(training_set.data)&#125;,</div><div class="line">    y=np.array(training_set.target),</div><div class="line">    num_epochs=None,</div><div class="line">    shuffle=True)</div></pre></td></tr></table></figure></p>
+<p>inputs.numpy_input_fn函数 有三个参数,数据格式是np.array<br>x是一个dict，键是送入DNNClassifier的feature值x，是从training_set_data里取出来的</p>
+<h3 id="三、用Iris-训练数据来训练DNNClassifier"><a href="#三、用Iris-训练数据来训练DNNClassifier" class="headerlink" title="三、用Iris 训练数据来训练DNNClassifier"></a>三、用Iris 训练数据来训练DNNClassifier</h3><p>用train方法训练，将上一步用inputs.numpy_input_fn函数加载进的数据 送入网络，设置训练步数为2000<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Train model.</div><div class="line">classifier.train(input_fn=train_input_fn, steps=2000)</div></pre></td></tr></table></figure></p>
+<p>也可以分成两个1000部来训练<br>如果要在训练的过程中跟踪模型，可以用SessionRunHook</p>
+<h3 id="四、evaluate-the-model"><a href="#四、evaluate-the-model" class="headerlink" title="四、evaluate the model"></a>四、evaluate the model</h3><p>用evaluate方法，也是先使用input函数，再调用calssifier.evaluate方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># Define the test inputs</div><div class="line">test_input_fn = tf.estimator.inputs.numpy_input_fn(</div><div class="line">    x=&#123;&quot;x&quot;: np.array(test_set.data)&#125;,</div><div class="line">    y=np.array(test_set.target),</div><div class="line">    num_epochs=1,</div><div class="line">    shuffle=False)</div><div class="line"></div><div class="line"># Evaluate accuracy.</div><div class="line">accuracy_score = classifier.evaluate(input_fn=test_input_fn)[&quot;accuracy&quot;]</div><div class="line"></div><div class="line">print(&quot;\nTest Accuracy: &#123;0:f&#125;\n&quot;.format(accuracy_score))</div></pre></td></tr></table></figure></p>
+<h3 id="五、分类新的sample"><a href="#五、分类新的sample" class="headerlink" title="五、分类新的sample"></a>五、分类新的sample</h3><p>用predict()方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># Classify two new flower samples.</div><div class="line">new_samples = np.array(</div><div class="line">    [[6.4, 3.2, 4.5, 1.5],</div><div class="line">     [5.8, 3.1, 5.0, 1.7]], dtype=np.float32)</div><div class="line">predict_input_fn = tf.estimator.inputs.numpy_input_fn(</div><div class="line">    x=&#123;&quot;x&quot;: new_samples&#125;,</div><div class="line">    num_epochs=1,</div><div class="line">    shuffle=False)</div><div class="line"></div><div class="line">predictions = list(classifier.predict(input_fn=predict_input_fn))</div><div class="line">predicted_classes = [p[&quot;classes&quot;] for p in predictions]</div><div class="line"></div><div class="line">print(</div><div class="line">    &quot;New Samples, Class Predictions:    &#123;&#125;\n&quot;</div><div class="line">    .format(predicted_classes))</div></pre></td></tr></table></figure></p>
+<h3 id="总体流程"><a href="#总体流程" class="headerlink" title="总体流程"></a>总体流程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">st=&gt;start: CSV file</div><div class="line">op=&gt;operation:   load_csv_with_header()</div><div class="line">得到training_set.data和training_set.target</div><div class="line">op1=&gt;operation: tf.estimator.inputs.numpy_input_fn()</div><div class="line">op2=&gt;operation: classifier</div><div class="line">e=&gt;end: output</div><div class="line"></div><div class="line">st-&gt;op-&gt;op1-&gt;op2-&gt;e</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/06/tensorflow(3)  tfestimator/" data-id="cj8er59ly000d8ooiytzgq3ih" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          tensorflow(4)在tf.estimator中建立input函数
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/06/python(4) list生成式/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">python(4) list生成式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaperReading/">PaperReading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow学习/">tensorflow学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作/">操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文章复现/">文章复现</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PaperReading/" style="font-size: 10px;">PaperReading</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/tensorflow学习/" style="font-size: 10px;">tensorflow学习</a> <a href="/tags/操作/" style="font-size: 10px;">操作</a> <a href="/tags/文章复现/" style="font-size: 10px;">文章复现</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/06/LRCN(1)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow学习(2)TensorFlow Mechanics 101/">tensorflow(2)Tensor Flow Mechanics101</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(4) 在tfestimator中建立input函数/">tensorflow(4)在tf.estimator中建立input函数</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/tensorflow(3)  tfestimator/">tensorflow(3)tf.estimator</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/06/python(4) list生成式/">python(4) list生成式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 guiyuliu<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
